@@ -88,6 +88,11 @@ public class Photo extends DataObject {
 	 * 
 	 */
 	protected long creationTime = System.currentTimeMillis();
+
+	/**
+	 * Set location of Photo
+	 */
+	protected Location location;
 	
 	/**
 	 * 
@@ -168,7 +173,7 @@ public class Photo extends DataObject {
 		rset.updateInt("status", status.asInt());
 		rset.updateInt("praise_sum", praiseSum);
 		rset.updateInt("no_votes", noVotes);
-		rset.updateLong("creation_time", creationTime);		
+		rset.updateLong("creation_time", creationTime);
 	}
 
 	/**
@@ -461,6 +466,18 @@ public class Photo extends DataObject {
 	 */
 	public long getCreationTime() {
 		return creationTime;
+	}
+
+	/**
+	 *
+	 * @methodtype get
+	 */
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 	
 }
