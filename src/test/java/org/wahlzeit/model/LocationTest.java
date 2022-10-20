@@ -19,4 +19,9 @@ public class LocationTest {
         assertNotNull(location);
         assertNotNull(location.coordinate);
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetCoordinate_withNull() {
+        location.setCoordinate(null);
+    }
 }

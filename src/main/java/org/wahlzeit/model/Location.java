@@ -12,6 +12,10 @@ public class Location {
     }
 
     public void setCoordinate(Coordinate coordinate) {
-        this.coordinate = coordinate;
+        if (coordinate != null) {
+            this.coordinate = coordinate;
+        } else {
+            throw new IllegalArgumentException("coordinate can not be null");
+        }
     }
 }
