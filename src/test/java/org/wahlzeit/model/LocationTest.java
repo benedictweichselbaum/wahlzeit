@@ -11,7 +11,7 @@ public class LocationTest {
 
     @Before
     public void setUp() {
-        location = new Location(new Coordinate(1, 1, 1));
+        location = new Location(1, 1, 1);
     }
 
     @Test
