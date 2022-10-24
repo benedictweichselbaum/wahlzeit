@@ -17,12 +17,20 @@ import org.wahlzeit.services.*;
  * Images are created from a source in different sizes as needed by the app.
  */
 public class PhotoUtil {
+
+	private static final double DEFAULT_LOCATION_X = 0;
+	private static final double DEFAULT_LOCATION_Y = 0;
+	private static final double DEFAULT_LOCATION_Z = 0;
+
 	
 	/**
 	 * 
 	 */
 	public static Photo createPhoto(File source, PhotoId id) throws Exception {
 		Photo result = PhotoFactory.getInstance().createPhoto(id);
+
+		// Set to default location as long as the Frontend does not give the proper information to ensure the application runs properly
+		result.setLocation(new Location(DEFAULT_LOCATION_X, DEFAULT_LOCATION_Y, DEFAULT_LOCATION_Z));
 		
 		Image sourceImage = createImageFiles(source, id);
 

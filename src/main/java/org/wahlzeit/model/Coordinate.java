@@ -17,6 +17,40 @@ public class Coordinate {
         this.z = z;
     }
 
+    /**
+     * Calculates the euclidian distance to a given coordinate
+     * @param coordinate given coordinate
+     * @return calculated distance
+     */
+    public double getDistance(Coordinate coordinate) {
+
+        double distanceX = this.getX() - coordinate.getX();
+        double distanceY = this.getY() - coordinate.getY();
+        double distanceZ = this.getZ() - coordinate.getZ();
+
+        return Math.sqrt(
+                distanceX * distanceX +
+                distanceY * distanceY +
+                distanceZ * distanceZ
+        );
+    }
+
+    /**
+     * Checks if coordinate is equal to a given one
+     * @param coordinate given coordinate
+     * @return true if equal, false else
+     */
+    public boolean isEqual(Coordinate coordinate) {
+        return this.getX() == coordinate.getX() &&
+                this.getY() == coordinate.getY() &&
+                this.getZ() == coordinate.getZ();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Coordinate && isEqual((Coordinate) obj);
+    }
+
     public double getX() {
         return x;
     }
