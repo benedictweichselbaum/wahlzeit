@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -46,5 +47,17 @@ public class CoordinateTest {
         assertTrue(coordinate.isEqual(coordinate));
         assertTrue(coordinate.isEqual(compareCoordinate1));
         assertFalse(coordinate.isEqual(compareCoordinate2));
+    }
+
+    @Test
+    public void testEquals() {
+        Object someOtherObject = new Object();
+        Coordinate compareCoordinateEquals = new Coordinate(0, 0, 0);
+        Coordinate compareCoordinateNotEquals = new Coordinate(1, 0 , 0);
+
+        // assert(Not)Equals-Method uses the implemented equals()-Method
+        assertNotEquals(coordinate, someOtherObject);
+        assertEquals(coordinate, compareCoordinateEquals);
+        assertNotEquals(coordinate, compareCoordinateNotEquals);
     }
 }

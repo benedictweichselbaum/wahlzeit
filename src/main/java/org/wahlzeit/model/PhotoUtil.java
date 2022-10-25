@@ -30,7 +30,7 @@ public class PhotoUtil {
 		Photo result = PhotoFactory.getInstance().createPhoto(id);
 
 		// Set to default location as long as the Frontend does not give the proper information to ensure the application runs properly
-		result.setLocation(new Location(DEFAULT_LOCATION_X, DEFAULT_LOCATION_Y, DEFAULT_LOCATION_Z));
+		result.setLocation(LocationManager.getInstance().createLocation(DEFAULT_LOCATION_X, DEFAULT_LOCATION_Y, DEFAULT_LOCATION_Z));
 		
 		Image sourceImage = createImageFiles(source, id);
 
