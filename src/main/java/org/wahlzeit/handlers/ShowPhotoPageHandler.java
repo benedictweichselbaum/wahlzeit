@@ -31,15 +31,15 @@ public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebF
 		
 		String arg = us.getAsString(args, "prior");
 		if (!StringUtil.isNullOrEmptyString(arg)) {
-			us.setPriorPhoto(PhotoManager.getPhoto(arg));
+			us.setPriorPhoto(MyPhotoManager.getPhoto(arg));
 		}
 		
 		if (!link.equals(PartUtil.SHOW_PHOTO_PAGE_NAME)) {
-			photo = PhotoManager.getPhoto(link);
+			photo = MyPhotoManager.getPhoto(link);
 		}
 		
 		if (photo == null) {
-			PhotoManager photoManager = PhotoManager.getInstance();
+			PhotoManager photoManager = MyPhotoManager.getInstance();
 			PhotoFilter filter = us.getPhotoFilter();
 			photo = photoManager.getVisiblePhoto(filter);
 			if (photo != null) {
@@ -203,7 +203,7 @@ public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebF
 		String result = PartUtil.DEFAULT_PAGE_NAME;
 		
 		String id = us.getAndSaveAsString(args, Photo.ID);
-		Photo photo = PhotoManager.getPhoto(id);
+		Photo photo = MyPhotoManager.getPhoto(id);
 		if (photo != null) {
 			if (us.isFormType(args, "flagPhotoLink")) {
 				result = PartUtil.FLAG_PHOTO_PAGE_NAME;

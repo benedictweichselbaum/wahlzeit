@@ -12,16 +12,13 @@ import java.util.*;
 import org.wahlzeit.main.*;
 import org.wahlzeit.services.*;
 
+import static org.wahlzeit.model.MyPhotoManager.hasPhoto;
+
 /**
  * A photo manager provides access to and manages photos.
  */
-public class PhotoManager extends ObjectManager {
+public abstract class PhotoManager extends ObjectManager {
 	
-	/**
-	 * 
-	 */
-	protected static final PhotoManager instance = new PhotoManager();
-
 	/**
 	 * In-memory cache for photos
 	 */
@@ -31,47 +28,12 @@ public class PhotoManager extends ObjectManager {
 	 * 
 	 */
 	protected PhotoTagCollector photoTagCollector = null;
-	
-	/**
-	 * 
-	 */
-	public static final PhotoManager getInstance() {
-		return instance;
-	}
-	
-	/**
-	 * 
-	 */
-	public static final boolean hasPhoto(String id) {
-		return hasPhoto(PhotoId.getIdFromString(id));
-	}
-	
-	/**
-	 * 
-	 */
-	public static final boolean hasPhoto(PhotoId id) {
-		return getPhoto(id) != null;
-	}
-	
-	/**
-	 * 
-	 */
-	public static final Photo getPhoto(String id) {
-		return getPhoto(PhotoId.getIdFromString(id));
-	}
-	
-	/**
-	 * 
-	 */
-	public static final Photo getPhoto(PhotoId id) {
-		return instance.getPhotoFromId(id);
-	}
-	
+
 	/**
 	 * 
 	 */
 	public PhotoManager() {
-		photoTagCollector = PhotoFactory.getInstance().createPhotoTagCollector();
+		photoTagCollector = MyPhotoFactory.getInstance().createPhotoTagCollector();
 	}
 	
 	/**
@@ -119,7 +81,7 @@ public class PhotoManager extends ObjectManager {
 	 * 
 	 */
 	protected Photo createObject(ResultSet rset) throws SQLException {
-		return PhotoFactory.getInstance().createPhoto(rset);
+		return MyPhotoFactory.getInstance().createPhoto(rset);
 	}
 	
 	/**

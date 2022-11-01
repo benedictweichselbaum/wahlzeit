@@ -14,7 +14,7 @@ import org.wahlzeit.utils.*;
 /**
  * A photo represents a user-provided (uploaded) photo.
  */
-public class Photo extends DataObject {
+public abstract class Photo extends DataObject {
 
 	/**
 	 * 
@@ -126,57 +126,6 @@ public class Photo extends DataObject {
 	 */
 	public String getIdAsString() {
 		return String.valueOf(id.asInt());
-	}
-	
-	/**
-	 * 
-	 */
-	public void readFrom(ResultSet rset) throws SQLException {
-		id = PhotoId.getIdFromInt(rset.getInt("id"));
-
-		ownerId = rset.getInt("owner_id");
-		ownerName = rset.getString("owner_name");
-		
-		ownerNotifyAboutPraise = rset.getBoolean("owner_notify_about_praise");
-		ownerEmailAddress = EmailAddress.getFromString(rset.getString("owner_email_address"));
-		ownerLanguage = Language.getFromInt(rset.getInt("owner_language"));
-		ownerHomePage = StringUtil.asUrl(rset.getString("owner_home_page"));
-
-		width = rset.getInt("width");
-		height = rset.getInt("height");
-
-		tags = new Tags(rset.getString("tags"));
-
-		status = PhotoStatus.getFromInt(rset.getInt("status"));
-		praiseSum = rset.getInt("praise_sum");
-		noVotes = rset.getInt("no_votes");
-
-		creationTime = rset.getLong("creation_time");
-
-		maxPhotoSize = PhotoSize.getFromWidthHeight(width, height);
-
-		location = LocationManager.getInstance().getLocation(rset.getInt("location"));
-	}
-	
-	/**
-	 * 
-	 */
-	public void writeOn(ResultSet rset) throws SQLException {
-		rset.updateInt("id", id.asInt());
-		rset.updateInt("owner_id", ownerId);
-		rset.updateString("owner_name", ownerName);
-		rset.updateBoolean("owner_notify_about_praise", ownerNotifyAboutPraise);
-		rset.updateString("owner_email_address", ownerEmailAddress.asString());
-		rset.updateInt("owner_language", ownerLanguage.asInt());
-		rset.updateString("owner_home_page", ownerHomePage.toString());
-		rset.updateInt("width", width);
-		rset.updateInt("height", height);
-		rset.updateString("tags", tags.asString());
-		rset.updateInt("status", status.asInt());
-		rset.updateInt("praise_sum", praiseSum);
-		rset.updateInt("no_votes", noVotes);
-		rset.updateLong("creation_time", creationTime);
-		rset.updateInt("location", location.getId());
 	}
 
 	/**

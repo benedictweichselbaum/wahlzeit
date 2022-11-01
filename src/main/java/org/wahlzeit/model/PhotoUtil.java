@@ -27,11 +27,14 @@ public class PhotoUtil {
 	 * 
 	 */
 	public static Photo createPhoto(File source, PhotoId id) throws Exception {
-		Photo result = PhotoFactory.getInstance().createPhoto(id);
+		MyPhoto result = MyPhotoFactory.getInstance().createPhoto(id);
 
 		// Set to default location as long as the Frontend does not give the proper information to ensure the application runs properly
 		result.setLocation(LocationManager.getInstance().createLocation(DEFAULT_LOCATION_X, DEFAULT_LOCATION_Y, DEFAULT_LOCATION_Z));
-		
+
+		result.setTitle("Default Title");
+		result.setDescription("Default Description");
+
 		Image sourceImage = createImageFiles(source, id);
 
 		int sourceWidth = sourceImage.getWidth(null);

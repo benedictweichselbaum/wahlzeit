@@ -40,7 +40,7 @@ public class FlagPhotoFormHandler extends AbstractWebFormHandler {
 		part.addStringFromArgs(args, UserSession.MESSAGE);
 		
 		String id = us.getAsString(args, Photo.ID);
-		Photo photo = PhotoManager.getPhoto(id);
+		Photo photo = MyPhotoManager.getPhoto(id);
 		part.addString(Photo.ID, id);
 		part.addString(Photo.THUMB, getPhotoThumb(us, photo));
 		part.maskAndAddStringFromArgsWithDefault(args, PhotoCase.FLAGGER, us.getEmailAddressAsString());
@@ -68,9 +68,9 @@ public class FlagPhotoFormHandler extends AbstractWebFormHandler {
 			return PartUtil.FLAG_PHOTO_PAGE_NAME;			
 		}
 		
-		Photo photo = PhotoManager.getPhoto(id);
+		Photo photo = MyPhotoManager.getPhoto(id);
 		photo.setStatus(photo.getStatus().asFlagged(true));
-		PhotoManager pm = PhotoManager.getInstance();
+		PhotoManager pm = MyPhotoManager.getInstance();
 		pm.savePhoto(photo);
 		
 		PhotoCase photoCase = new PhotoCase(photo);

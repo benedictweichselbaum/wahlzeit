@@ -3,14 +3,8 @@ package org.wahlzeit.model;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
-import org.wahlzeit.services.DatabaseConnection;
 import org.wahlzeit.services.EmailAddress;
 import org.wahlzeit.services.Language;
-import org.wahlzeit.services.Session;
-import org.wahlzeit.services.SessionManager;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -31,7 +25,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class PhotoTest {
+public class MyPhotoTest {
 
     private ResultSet resultSet;
 
@@ -71,7 +65,7 @@ public class PhotoTest {
 
     @Test
     public void testConstructorWithNoArgs() {
-        Photo photo = new Photo();
+        Photo photo = new MyPhoto();
 
         assertNotNull(photo);
 
@@ -81,7 +75,7 @@ public class PhotoTest {
 
     @Test
     public void testConstructorWithId() {
-        Photo photo = new Photo(new PhotoId(3));
+        Photo photo = new MyPhoto(new PhotoId(3));
 
         assertNotNull(photo);
 
@@ -93,7 +87,7 @@ public class PhotoTest {
     @Test
     @Ignore
     public void testConstructorWithRSet() throws Exception {
-            Photo photo = new Photo(resultSet);
+            Photo photo = new MyPhoto(resultSet);
 
             // Check if creation is successful
             // Constructor calls readFrom which is tested below
@@ -103,7 +97,7 @@ public class PhotoTest {
     @Test
     @Ignore
     public void testReadFrom() throws Exception {
-        Photo photo = new Photo();
+        Photo photo = new MyPhoto();
 
         photo.readFrom(resultSet);
 
@@ -130,7 +124,7 @@ public class PhotoTest {
     @Test
     @Ignore
     public void testWriteOn() throws Exception {
-        Photo photo = new Photo(resultSet);
+        Photo photo = new MyPhoto(resultSet);
 
         photo.writeOn(resultSet);
 
@@ -152,7 +146,7 @@ public class PhotoTest {
 
     @Test
     public void testGetIdAsString() {
-        Photo photo = new Photo(new PhotoId(100));
+        Photo photo = new MyPhoto(new PhotoId(100));
 
         String actualStringId = photo.getIdAsString();
 
@@ -161,7 +155,7 @@ public class PhotoTest {
 
     @Test
     public void testGetPraise() {
-        Photo photo = new Photo();
+        Photo photo = new MyPhoto();
         photo.praiseSum = 500;
         photo.noVotes = 25;
 
@@ -170,7 +164,7 @@ public class PhotoTest {
 
     @Test
     public void testSetOwnerId() {
-        Photo photo = new Photo();
+        Photo photo = new MyPhoto();
 
         // make not dirty
         photo.resetWriteCount();
@@ -183,7 +177,7 @@ public class PhotoTest {
 
     @Test
     public void testSetOwnerName() {
-        Photo photo = new Photo();
+        Photo photo = new MyPhoto();
 
         // make not dirty
         photo.resetWriteCount();
@@ -196,7 +190,7 @@ public class PhotoTest {
 
     @Test
     public void testGetSummary() throws Exception {
-            Photo photo = new Photo(PhotoId.NULL_ID);
+            Photo photo = new MyPhoto(PhotoId.NULL_ID);
             photo.setOwnerName("Test Name");
 
             assertEquals("Foto von Test Name", photo.getSummary(new GermanModelConfig()));
@@ -205,14 +199,14 @@ public class PhotoTest {
     @Test
     @Ignore
     public void testGetCaption() throws Exception {
-        Photo photo = new Photo(resultSet);
+        Photo photo = new MyPhoto(resultSet);
 
         assertEquals("Foto von <a href=\"https://www.homepage.de\" rel=\"nofollow\">Test Name</a>", photo.getCaption(new GermanModelConfig()));
     }
 
     @Test
     public void testSetOwnerNotifyAboutPraise() {
-        Photo photo = new Photo();
+        Photo photo = new MyPhoto();
 
         // make not dirty
         photo.resetWriteCount();
@@ -225,7 +219,7 @@ public class PhotoTest {
 
     @Test
     public void testSetOwnerEmailAddress() {
-        Photo photo = new Photo();
+        Photo photo = new MyPhoto();
 
         // make not dirty
         photo.resetWriteCount();
@@ -238,7 +232,7 @@ public class PhotoTest {
 
     @Test
     public void testSetOwnerLanguage() {
-        Photo photo = new Photo();
+        Photo photo = new MyPhoto();
 
         // make not dirty
         photo.resetWriteCount();
@@ -251,7 +245,7 @@ public class PhotoTest {
 
     @Test
     public void testSetOwnerHomePage() throws MalformedURLException {
-        Photo photo = new Photo();
+        Photo photo = new MyPhoto();
 
         // make not dirty
         photo.resetWriteCount();
@@ -264,8 +258,8 @@ public class PhotoTest {
 
     @Test
     public void testHasSameOwner() {
-        Photo photo1 = new Photo();
-        Photo photo2 = new Photo();
+        Photo photo1 = new MyPhoto();
+        Photo photo2 = new MyPhoto();
 
         photo1.setOwnerEmailAddress(EmailAddress.getFromString("mail@test.de"));
         photo2.setOwnerEmailAddress(EmailAddress.getFromString("mail@test.de"));
@@ -279,10 +273,10 @@ public class PhotoTest {
 
     @Test
     public void testIsWiderThanHigher() {
-        Photo photo1 = new Photo();
+        Photo photo1 = new MyPhoto();
         photo1.setWidthAndHeight(100, 200);
 
-        Photo photo2 = new Photo();
+        Photo photo2 = new MyPhoto();
         photo2.setWidthAndHeight(200, 100);
 
         assertTrue(photo2.isWiderThanHigher());
@@ -291,7 +285,7 @@ public class PhotoTest {
 
     @Test
     public void testGetThumbWidth_widerThanHigher() {
-        Photo photo = new Photo();
+        Photo photo = new MyPhoto();
         photo.setWidthAndHeight(200, 100);
 
         assertEquals(Photo.MAX_THUMB_PHOTO_WIDTH, photo.getThumbWidth());
@@ -299,7 +293,7 @@ public class PhotoTest {
 
     @Test
     public void testGetThumbWidth_not_widerThanHigher() {
-        Photo photo = new Photo();
+        Photo photo = new MyPhoto();
         photo.setWidthAndHeight(100, 200);
 
         assertEquals(100 * Photo.MAX_THUMB_PHOTO_HEIGHT / 200, photo.getThumbWidth());
@@ -307,7 +301,7 @@ public class PhotoTest {
 
     @Test
     public void testGetThumbHight_widerThanHigher() {
-        Photo photo = new Photo();
+        Photo photo = new MyPhoto();
         photo.setWidthAndHeight(100, 200);
 
         assertEquals(Photo.MAX_THUMB_PHOTO_HEIGHT, photo.getThumbHeight());
@@ -315,7 +309,7 @@ public class PhotoTest {
 
     @Test
     public void testGetThumbHeight_widerThanHigher() {
-        Photo photo = new Photo();
+        Photo photo = new MyPhoto();
         photo.setWidthAndHeight(200, 100);
 
         assertEquals(100 * Photo.MAX_THUMB_PHOTO_WIDTH / 200, photo.getThumbHeight());
@@ -323,7 +317,7 @@ public class PhotoTest {
 
     @Test
     public void testSetWidthAndHight() {
-        Photo photo = new Photo();
+        Photo photo = new MyPhoto();
 
         // make not dirty
         photo.resetWriteCount();
@@ -338,7 +332,7 @@ public class PhotoTest {
 
     @Test
     public void testHasPhotoSize() {
-        Photo photo = new Photo();
+        Photo photo = new MyPhoto();
         photo.setWidthAndHeight(200, 300);
 
         assertTrue(photo.hasPhotoSize(PhotoSize.THUMB));
@@ -348,7 +342,7 @@ public class PhotoTest {
 
     @Test
     public void testGetPraiseAsString() {
-        Photo photo = new Photo();
+        Photo photo = new MyPhoto();
         photo.addToPraise(20);
 
         assertEquals("15.00", photo.getPraiseAsString(new GermanModelConfig()));
@@ -356,7 +350,7 @@ public class PhotoTest {
 
     @Test
     public void testAddToPraise() {
-        Photo photo = new Photo();
+        Photo photo = new MyPhoto();
 
         photo.resetWriteCount();
 
@@ -368,7 +362,7 @@ public class PhotoTest {
 
     @Test
     public void testSetStatus() {
-        Photo photo = new Photo();
+        Photo photo = new MyPhoto();
 
         // make not dirty
         photo.resetWriteCount();
@@ -381,7 +375,7 @@ public class PhotoTest {
 
     @Test
     public void testSetTags() {
-        Photo photo = new Photo();
+        Photo photo = new MyPhoto();
 
         // make not dirty
         photo.resetWriteCount();
