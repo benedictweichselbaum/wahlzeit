@@ -56,6 +56,9 @@ public class MyPhotoTest {
         
         when(resultSet.getInt("location")).thenReturn(1);
 
+        when(resultSet.getString("title")).thenReturn("Title");
+        when(resultSet.getString("description")).thenReturn("Description");
+
         doNothing().when(resultSet).updateInt(anyString(), anyInt());
         doNothing().when(resultSet).updateString(anyString(), anyString());
         doNothing().when(resultSet).updateBoolean(anyString(), anyBoolean());
@@ -97,7 +100,7 @@ public class MyPhotoTest {
     @Test
     @Ignore
     public void testReadFrom() throws Exception {
-        Photo photo = new MyPhoto();
+        MyPhoto photo = new MyPhoto();
 
         photo.readFrom(resultSet);
 
@@ -119,6 +122,9 @@ public class MyPhotoTest {
         assertEquals(1000L, photo.getCreationTime());
 
         assertEquals(PhotoSize.THUMB, photo.getMaxPhotoSize());
+
+        assertEquals("Title", photo.getTitle());
+        assertEquals("Description", photo.getDescription());
     }
 
     @Test
@@ -142,6 +148,8 @@ public class MyPhotoTest {
         verify(resultSet).updateInt(eq("praise_sum"), anyInt());
         verify(resultSet).updateInt(eq("no_votes"), anyInt());
         verify(resultSet).updateLong(eq("creation_time"), anyLong());
+        verify(resultSet).updateLong(eq("title"), anyLong());
+        verify(resultSet).updateLong(eq("description"), anyLong());
     }
 
     @Test

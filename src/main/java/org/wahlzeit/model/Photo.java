@@ -97,7 +97,7 @@ public abstract class Photo extends DataObject {
 	/**
 	 * 
 	 */
-	public Photo() {
+	protected Photo() {
 		id = PhotoId.getNextId();
 		incWriteCount();
 	}
@@ -106,7 +106,7 @@ public abstract class Photo extends DataObject {
 	 * 
 	 * @methodtype constructor
 	 */
-	public Photo(PhotoId myId) {
+	protected Photo(PhotoId myId) {
 		id = myId;
 		
 		incWriteCount();
@@ -116,7 +116,7 @@ public abstract class Photo extends DataObject {
 	 * 
 	 * @methodtype constructor
 	 */
-	public Photo(ResultSet rset) throws SQLException {
+	protected Photo(ResultSet rset) throws SQLException {
 		readFrom(rset);
 	}
 

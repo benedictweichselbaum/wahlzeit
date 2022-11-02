@@ -2,6 +2,8 @@ package org.wahlzeit.model;
 
 public class MyPhotoManager extends PhotoManager {
 
+    private static final MyPhotoManager photoManager = new MyPhotoManager();
+
     public static Photo getPhoto(String id) {
         return getInstance().getPhotoFromId(PhotoId.getIdFromString(id));
     }
@@ -13,8 +15,6 @@ public class MyPhotoManager extends PhotoManager {
     private MyPhotoManager() {
         super();
     }
-
-    private static final MyPhotoManager photoManager = new MyPhotoManager();
 
     public static boolean hasPhoto(String id) {
         return hasPhoto(PhotoId.getIdFromString(id));
