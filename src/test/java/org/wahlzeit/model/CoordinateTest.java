@@ -43,10 +43,12 @@ public class CoordinateTest {
     public void testIsEqual() {
         Coordinate compareCoordinate1 = new Coordinate(0, 0, 0);
         Coordinate compareCoordinate2 = new Coordinate(0.1, 0, 0);
+        Coordinate compareCoordinate3 = new Coordinate(0.00001, 0, 0);
 
         assertTrue(coordinate.isEqual(coordinate));
         assertTrue(coordinate.isEqual(compareCoordinate1));
         assertFalse(coordinate.isEqual(compareCoordinate2));
+        assertTrue(coordinate.isEqual(compareCoordinate3));
     }
 
     @Test
@@ -59,5 +61,15 @@ public class CoordinateTest {
         assertNotEquals(coordinate, someOtherObject);
         assertEquals(coordinate, compareCoordinateEquals);
         assertNotEquals(coordinate, compareCoordinateNotEquals);
+    }
+
+    @Test
+    public void testHashCode() {
+        Coordinate compareCoordinate1 = new Coordinate(0, 0, 0);
+        Coordinate compareCoordinate2 = new Coordinate(0.1, 0, 0);
+        Coordinate compareCoordinate3 = new Coordinate(0.00001, 0, 0);
+
+        assertNotEquals(compareCoordinate1.hashCode(), compareCoordinate2.hashCode());
+        assertEquals(compareCoordinate1.hashCode(), compareCoordinate3.hashCode());
     }
 }

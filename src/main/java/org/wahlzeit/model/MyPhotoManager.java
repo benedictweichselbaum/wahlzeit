@@ -1,19 +1,23 @@
 package org.wahlzeit.model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class MyPhotoManager extends PhotoManager {
 
     private static final MyPhotoManager photoManager = new MyPhotoManager();
 
-    public static Photo getPhoto(String id) {
-        return getInstance().getPhotoFromId(PhotoId.getIdFromString(id));
+    public static MyPhoto getPhoto(String id) {
+        return (MyPhoto) getInstance().getPhotoFromId(PhotoId.getIdFromString(id));
     }
 
-    public static Photo getPhoto(PhotoId id) {
-        return getInstance().getPhotoFromId(id);
+    public static MyPhoto getPhoto(PhotoId id) {
+         return (MyPhoto) getInstance().getPhotoFromId(id);
     }
 
     private MyPhotoManager() {
         super();
+        photoTagCollector = MyPhotoFactory.getInstance().createPhotoTagCollector();
     }
 
     public static boolean hasPhoto(String id) {
@@ -29,5 +33,10 @@ public class MyPhotoManager extends PhotoManager {
 
     public static PhotoManager getInstance() {
         return photoManager;
+    }
+
+    @Override
+    protected MyPhoto createObject(ResultSet rset) throws SQLException  {
+        return MyPhotoFactory.getInstance().createPhoto(rset);
     }
 }

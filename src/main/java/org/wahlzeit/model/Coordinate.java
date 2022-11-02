@@ -5,6 +5,8 @@ package org.wahlzeit.model;
  */
 public class Coordinate {
 
+    private static final double EQUALS_DELTA = 0.0009;
+
     protected double x;
 
     protected double y;
@@ -41,14 +43,25 @@ public class Coordinate {
      * @return true if equal, false else
      */
     public boolean isEqual(Coordinate coordinate) {
-        return this.getX() == coordinate.getX() &&
-                this.getY() == coordinate.getY() &&
-                this.getZ() == coordinate.getZ();
+        return Math.abs(this.getX() - coordinate.getX()) <= EQUALS_DELTA &&
+                Math.abs(this.getY() - coordinate.getY()) <= EQUALS_DELTA &&
+                Math.abs(this.getZ() - coordinate.getZ()) <= EQUALS_DELTA;
     }
 
     @Override
     public boolean equals(Object obj) {
         return obj instanceof Coordinate && isEqual((Coordinate) obj);
+    }
+
+    @Override
+    public int hashCode() {
+        long result = 120L;
+
+        result = 37 * result + Double.doubleToLongBits(Math.round(getX() * 100.0) / 100.0);
+        result = 37 * result + Double.doubleToLongBits(Math.round(getY() * 100.0) / 100.0);
+        result = 37 * result + Double.doubleToLongBits(Math.round(getZ() * 100.0) / 100.0);
+
+        return (int) result;
     }
 
     public double getX() {

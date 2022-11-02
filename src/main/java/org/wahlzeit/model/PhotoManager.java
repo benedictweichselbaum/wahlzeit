@@ -12,8 +12,6 @@ import java.util.*;
 import org.wahlzeit.main.*;
 import org.wahlzeit.services.*;
 
-import static org.wahlzeit.model.MyPhotoManager.hasPhoto;
-
 /**
  * A photo manager provides access to and manages photos.
  */
@@ -32,8 +30,8 @@ public abstract class PhotoManager extends ObjectManager {
 	/**
 	 * 
 	 */
-	public PhotoManager() {
-		photoTagCollector = MyPhotoFactory.getInstance().createPhotoTagCollector();
+	protected PhotoManager() {
+
 	}
 	
 	/**
@@ -80,9 +78,7 @@ public abstract class PhotoManager extends ObjectManager {
 	/**
 	 * 
 	 */
-	protected Photo createObject(ResultSet rset) throws SQLException {
-		return MyPhotoFactory.getInstance().createPhoto(rset);
-	}
+	protected abstract Photo createObject(ResultSet rset) throws SQLException;
 	
 	/**
 	 * @methodtype command
@@ -304,7 +300,7 @@ public abstract class PhotoManager extends ObjectManager {
 	 * @methodtype assertion
 	 */
 	protected void assertIsNewPhoto(PhotoId id) {
-		if (hasPhoto(id)) {
+		if (getPhotoFromId(id) == null) {
 			throw new IllegalStateException("Photo already exists!");
 		}
 	}
