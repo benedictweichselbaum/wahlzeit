@@ -3,17 +3,23 @@ package org.wahlzeit.model;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.wahlzeit.services.DatabaseConnection;
 import org.wahlzeit.services.EmailAddress;
 import org.wahlzeit.services.Language;
+import org.wahlzeit.services.SessionManager;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -29,9 +35,28 @@ public class MyPhotoTest {
 
     private ResultSet resultSet;
 
+    private LocationManager locationManager;
+
+    private SessionManager sessionManager;
+
+    private DatabaseConnection databaseConnection;
+
+    private PreparedStatement preparedStatement;
+
     @Before
     public void setUpTestResultSetAsMock() throws Exception {
-        resultSet = mock(ResultSet.class);
+        databaseConnection = mock(DatabaseConnection.class);
+        preparedStatement = mock(PreparedStatement.class);
+
+        when(preparedStatement.toString()).thenReturn("SELECT * FROM test;");
+        when(databaseConnection.getReadingStatement(anyString())).thenReturn(preparedStatement);
+
+        try(MockedStatic<SessionManager> sessionManagerMockedStatic = Mockito.mockStatic(SessionManager.class)) {
+            sessionManagerMockedStatic.when(SessionManager::getDatabaseConnection).thenReturn(databaseConnection);
+            resultSet = mock(ResultSet.class);
+            when(preparedStatement.executeQuery()).thenReturn(resultSet);
+            locationManager = mock(LocationManager.class);
+        }
 
         when(resultSet.getInt("id")).thenReturn(0);
 
@@ -53,11 +78,13 @@ public class MyPhotoTest {
         when(resultSet.getInt("no_votes")).thenReturn(1);
 
         when(resultSet.getLong("creation_time")).thenReturn(1000L);
-        
+
         when(resultSet.getInt("location")).thenReturn(1);
 
         when(resultSet.getString("title")).thenReturn("Title");
         when(resultSet.getString("description")).thenReturn("Description");
+
+        when(locationManager.getLocation(any())).thenReturn(new Location(1,1, 2, 3));
 
         doNothing().when(resultSet).updateInt(anyString(), anyInt());
         doNothing().when(resultSet).updateString(anyString(), anyString());
@@ -88,68 +115,76 @@ public class MyPhotoTest {
     }
 
     @Test
-    @Ignore
     public void testConstructorWithRSet() throws Exception {
+        try (MockedStatic<LocationManager> staticLocationManager = Mockito.mockStatic(LocationManager.class)) {
+            staticLocationManager.when(LocationManager::getInstance).thenReturn(locationManager);
             Photo photo = new MyPhoto(resultSet);
 
             // Check if creation is successful
             // Constructor calls readFrom which is tested below
             assertNotNull(photo);
+        }
     }
 
     @Test
-    @Ignore
     public void testReadFrom() throws Exception {
-        MyPhoto photo = new MyPhoto();
 
-        photo.readFrom(resultSet);
+        try (MockedStatic<LocationManager> staticLocationManager = Mockito.mockStatic(LocationManager.class)) {
+            staticLocationManager.when(LocationManager::getInstance).thenReturn(locationManager);
 
-        assertEquals(0, photo.getId().asInt());
-        assertEquals(1, photo.getOwnerId());
-        assertEquals("Test Name", photo.getOwnerName());
-        assertTrue(photo.getOwnerNotifyAboutPraise());
-        assertEquals("owner@test.de", photo.getOwnerEmailAddress().asString());
-        assertEquals(Language.ENGLISH, photo.getOwnerLanguage());
-        assertEquals("https://www.homepage.de", photo.getOwnerHomePage().toString());
-        assertEquals(200, photo.getWidth());
-        assertEquals(100, photo.getHeight());
+            MyPhoto photo = new MyPhoto();
 
-        assertEquals(2, photo.getTags().tags.size());
+            photo.readFrom(resultSet);
 
-        assertEquals(PhotoStatus.VISIBLE, photo.getStatus());
-        assertEquals(1 / 1, photo.getPraise(), 0);
+            assertEquals(0, photo.getId().asInt());
+            assertEquals(1, photo.getOwnerId());
+            assertEquals("Test Name", photo.getOwnerName());
+            assertTrue(photo.getOwnerNotifyAboutPraise());
+            assertEquals("owner@test.de", photo.getOwnerEmailAddress().asString());
+            assertEquals(Language.ENGLISH, photo.getOwnerLanguage());
+            assertEquals("https://www.homepage.de", photo.getOwnerHomePage().toString());
+            assertEquals(200, photo.getWidth());
+            assertEquals(100, photo.getHeight());
 
-        assertEquals(1000L, photo.getCreationTime());
+            assertEquals(2, photo.getTags().tags.size());
 
-        assertEquals(PhotoSize.THUMB, photo.getMaxPhotoSize());
+            assertEquals(PhotoStatus.VISIBLE, photo.getStatus());
+            assertEquals(1 / 1, photo.getPraise(), 0);
 
-        assertEquals("Title", photo.getTitle());
-        assertEquals("Description", photo.getDescription());
+            assertEquals(1000L, photo.getCreationTime());
+
+            assertEquals(PhotoSize.THUMB, photo.getMaxPhotoSize());
+
+            assertEquals("Title", photo.getTitle());
+            assertEquals("Description", photo.getDescription());
+        }
     }
 
     @Test
-    @Ignore
     public void testWriteOn() throws Exception {
-        Photo photo = new MyPhoto(resultSet);
+        try (MockedStatic<LocationManager> staticLocationManager = Mockito.mockStatic(LocationManager.class)) {
+            staticLocationManager.when(LocationManager::getInstance).thenReturn(locationManager);
+            Photo photo = new MyPhoto(resultSet);
 
-        photo.writeOn(resultSet);
+            photo.writeOn(resultSet);
 
-        verify(resultSet).updateInt(eq("id"), anyInt());
-        verify(resultSet).updateInt(eq("owner_id"), anyInt());
-        verify(resultSet).updateString(eq("owner_name"), anyString());
-        verify(resultSet).updateBoolean(eq("owner_notify_about_praise"), anyBoolean());
-        verify(resultSet).updateString(eq("owner_email_address"), anyString());
-        verify(resultSet).updateInt(eq("owner_language"), anyInt());
-        verify(resultSet).updateString(eq("owner_home_page"), anyString());
-        verify(resultSet).updateInt(eq("width"), anyInt());
-        verify(resultSet).updateInt(eq("height"), anyInt());
-        verify(resultSet).updateString(eq("tags"), anyString());
-        verify(resultSet).updateInt(eq("status"), anyInt());
-        verify(resultSet).updateInt(eq("praise_sum"), anyInt());
-        verify(resultSet).updateInt(eq("no_votes"), anyInt());
-        verify(resultSet).updateLong(eq("creation_time"), anyLong());
-        verify(resultSet).updateLong(eq("title"), anyLong());
-        verify(resultSet).updateLong(eq("description"), anyLong());
+            verify(resultSet).updateInt(eq("id"), anyInt());
+            verify(resultSet).updateInt(eq("owner_id"), anyInt());
+            verify(resultSet).updateString(eq("owner_name"), anyString());
+            verify(resultSet).updateBoolean(eq("owner_notify_about_praise"), anyBoolean());
+            verify(resultSet).updateString(eq("owner_email_address"), anyString());
+            verify(resultSet).updateInt(eq("owner_language"), anyInt());
+            verify(resultSet).updateString(eq("owner_home_page"), anyString());
+            verify(resultSet).updateInt(eq("width"), anyInt());
+            verify(resultSet).updateInt(eq("height"), anyInt());
+            verify(resultSet).updateString(eq("tags"), anyString());
+            verify(resultSet).updateInt(eq("status"), anyInt());
+            verify(resultSet).updateInt(eq("praise_sum"), anyInt());
+            verify(resultSet).updateInt(eq("no_votes"), anyInt());
+            verify(resultSet).updateLong(eq("creation_time"), anyLong());
+            verify(resultSet).updateString(eq("title"), anyString());
+            verify(resultSet).updateString(eq("description"), anyString());
+        }
     }
 
     @Test
@@ -205,11 +240,13 @@ public class MyPhotoTest {
     }
 
     @Test
-    @Ignore
     public void testGetCaption() throws Exception {
-        Photo photo = new MyPhoto(resultSet);
+        try (MockedStatic<LocationManager> staticLocationManager = Mockito.mockStatic(LocationManager.class)) {
+            staticLocationManager.when(LocationManager::getInstance).thenReturn(locationManager);
+            Photo photo = new MyPhoto(resultSet);
 
-        assertEquals("Foto von <a href=\"https://www.homepage.de\" rel=\"nofollow\">Test Name</a>", photo.getCaption(new GermanModelConfig()));
+            assertEquals("Foto von <a href=\"https://www.homepage.de\" rel=\"nofollow\">Test Name</a>", photo.getCaption(new GermanModelConfig()));
+        }
     }
 
     @Test

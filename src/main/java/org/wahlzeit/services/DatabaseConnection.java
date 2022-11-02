@@ -161,7 +161,7 @@ public class DatabaseConnection {
 	/**
 	 * 
 	 */
-	protected PreparedStatement getReadingStatement(String stmt) throws SQLException {
+	public PreparedStatement getReadingStatement(String stmt) throws SQLException {
 		PreparedStatement result = readingStatements.get(stmt);
 		if (result == null) {
 			result = getRdbmsConnection().prepareStatement(stmt);
@@ -175,7 +175,7 @@ public class DatabaseConnection {
 	/**
 	 * 
 	 */
-	protected PreparedStatement getUpdatingStatement(String stmt) throws SQLException {
+	public PreparedStatement getUpdatingStatement(String stmt) throws SQLException {
 		PreparedStatement result = updatingStatements.get(stmt);
 		if (result == null) {
 			result = getRdbmsConnection().prepareStatement(stmt, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
