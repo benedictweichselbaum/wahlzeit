@@ -300,7 +300,7 @@ public abstract class PhotoManager extends ObjectManager {
 	 * @methodtype assertion
 	 */
 	protected void assertIsNewPhoto(PhotoId id) {
-		if (getPhotoFromId(id) == null) {
+		if (getPhotoFromId(id) != null) {
 			throw new IllegalStateException("Photo already exists!");
 		}
 	}

@@ -2,7 +2,7 @@ package org.wahlzeit.model;
 
 import java.util.function.DoublePredicate;
 
-public class SphericCoordinate implements Coordinate {
+public class SphericalCoordinate implements Coordinate {
 
     private static final DoublePredicate PHI_PREDICATE = p -> p < 0 || p > Math.PI;
     private static final DoublePredicate THETA_PREDICATE = t -> t < 0 || t > 2 * Math.PI;
@@ -14,7 +14,7 @@ public class SphericCoordinate implements Coordinate {
 
     private double radius;
 
-    public SphericCoordinate(double phi, double theta, double radius) {
+    public SphericalCoordinate(double phi, double theta, double radius) {
         checkInputs(phi, theta, radius);
         this.phi = phi;
         this.theta = theta;
@@ -31,7 +31,7 @@ public class SphericCoordinate implements Coordinate {
     }
 
     @Override
-    public SphericCoordinate asSphericalCoordinate() {
+    public SphericalCoordinate asSphericalCoordinate() {
         return this;
     }
 
@@ -52,7 +52,7 @@ public class SphericCoordinate implements Coordinate {
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return asCartesianCoordinate().hashCode();
     }
 
     @Override

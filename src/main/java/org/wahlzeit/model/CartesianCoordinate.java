@@ -23,10 +23,10 @@ public class CartesianCoordinate implements Coordinate {
     }
 
     @Override
-    public SphericCoordinate asSphericalCoordinate() {
-        return new SphericCoordinate(
-                Math.atan(Math.sqrt(x * x + y * y) / z),
-                Math.atan(y / x),
+    public SphericalCoordinate asSphericalCoordinate() {
+        return new SphericalCoordinate(
+                Math.atan2(Math.sqrt(x * x + y * y), z),
+                Math.atan2(y, x),
                 Math.sqrt(x * x + y * y + z * z)
         );
     }
@@ -49,7 +49,7 @@ public class CartesianCoordinate implements Coordinate {
 
     @Override
     public boolean isEqual(Coordinate coordinate) {
-        return false;
+        return isEqualCartesian(coordinate.asCartesianCoordinate());
     }
 
     /**
@@ -75,7 +75,7 @@ public class CartesianCoordinate implements Coordinate {
      * @param coordinate given coordinate
      * @return true if equal, false else
      */
-    public boolean isEqual(CartesianCoordinate coordinate) {
+    private boolean isEqualCartesian(CartesianCoordinate coordinate) {
         return Math.abs(this.getX() - coordinate.getX()) <= EQUALS_DELTA &&
                 Math.abs(this.getY() - coordinate.getY()) <= EQUALS_DELTA &&
                 Math.abs(this.getZ() - coordinate.getZ()) <= EQUALS_DELTA;

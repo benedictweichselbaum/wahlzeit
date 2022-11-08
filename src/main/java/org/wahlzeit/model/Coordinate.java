@@ -6,7 +6,7 @@ package org.wahlzeit.model;
 public interface Coordinate {
     CartesianCoordinate asCartesianCoordinate();
 
-    SphericCoordinate asSphericalCoordinate();
+    SphericalCoordinate asSphericalCoordinate();
 
     double getCartesianDistance(Coordinate coordinate);
 
