@@ -7,7 +7,7 @@ public abstract class AbstractCoordinate implements Coordinate {
     protected static final double EQUALS_DELTA = 0.0009;
     @Override
     public double getCartesianDistance(Coordinate coordinate) {
-        return this.getDistance(coordinate.asCartesianCoordinate());
+        return this.calculateEuclidianDistance(coordinate.asCartesianCoordinate());
     }
 
     @Override
@@ -44,7 +44,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 
         return (int) result;
     }
-    private double getDistance(CartesianCoordinate coordinate) {
+    private double calculateEuclidianDistance(CartesianCoordinate coordinate) {
 
         CartesianCoordinate currentCoordinate = this.asCartesianCoordinate();
 
