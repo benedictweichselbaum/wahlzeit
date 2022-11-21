@@ -1,5 +1,9 @@
 package org.wahlzeit.model;
 
+import static org.wahlzeit.model.SphericalCoordinate.PHI_PREDICATE;
+import static org.wahlzeit.model.SphericalCoordinate.RADIUS_PREDICATE;
+import static org.wahlzeit.model.SphericalCoordinate.THETA_PREDICATE;
+
 /**
  * Cartesian Coordinate.
  * No invariants necessary. All values for x, y and z are allowed
@@ -40,9 +44,9 @@ public class CartesianCoordinate extends AbstractCoordinate {
                 Math.atan2(y, x),
                 Math.sqrt(x * x + y * y + z * z)
         );
-        assert sphericalCoordinate.getPhi() >= 0 && sphericalCoordinate.getPhi() <= Math.PI;
-        assert sphericalCoordinate.getTheta() >= 0 && sphericalCoordinate.getTheta() <= 2 * Math.PI;
-        assert sphericalCoordinate.getRadius() >= 0;
+        assert PHI_PREDICATE.test(sphericalCoordinate.getPhi());
+        assert THETA_PREDICATE.test(sphericalCoordinate.getTheta());
+        assert RADIUS_PREDICATE.test(sphericalCoordinate.getRadius());
 
         assertClassInvariants();
         return sphericalCoordinate;

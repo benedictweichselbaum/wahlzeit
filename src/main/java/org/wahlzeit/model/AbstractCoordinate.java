@@ -16,7 +16,7 @@ public abstract class AbstractCoordinate implements Coordinate {
         assertClassInvariants();
         assertCoordinateIsNotNull(coordinate);
         double distance = this.calculateEuclidianDistance(coordinate.asCartesianCoordinate());
-        assert distance >= 0;
+        assertDoubleIsPositiveOrZero(distance);
         assertClassInvariants();
 
         return distance;
@@ -34,7 +34,7 @@ public abstract class AbstractCoordinate implements Coordinate {
                         new double[]{cartesianCoordinate.getX(), cartesianCoordinate.getY(), cartesianCoordinate.getZ()}
                 )
         );
-        assert centralAngle >= 0;
+        assertDoubleIsPositiveOrZero(centralAngle);
         assertClassInvariants();
         return centralAngle;
     }
@@ -100,6 +100,12 @@ public abstract class AbstractCoordinate implements Coordinate {
     private void assertCoordinateIsNotNull(Coordinate coordinate) {
         if (coordinate == null) {
             throw new IllegalArgumentException("Coordinate can not be null");
+        }
+    }
+
+    private void assertDoubleIsPositiveOrZero(double number) {
+        if (number < 0) {
+            throw new ArithmeticException("Result of method is smaller than zero");
         }
     }
 }

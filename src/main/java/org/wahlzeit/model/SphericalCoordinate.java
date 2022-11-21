@@ -9,9 +9,9 @@ import java.util.function.DoublePredicate;
  */
 public class SphericalCoordinate extends AbstractCoordinate {
 
-    private static final DoublePredicate PHI_PREDICATE = p -> p < 0 || p > Math.PI;
-    private static final DoublePredicate THETA_PREDICATE = t -> t < 0 || t > 2 * Math.PI;
-    private static final DoublePredicate RADIUS_PREDICATE = r -> r < 0;
+    static final DoublePredicate PHI_PREDICATE = p -> p >= 0 && p <= Math.PI;
+    static final DoublePredicate THETA_PREDICATE = t -> t >= 0 && t <= 2 * Math.PI;
+    static final DoublePredicate RADIUS_PREDICATE = r -> r >= 0;
 
     private double phi;
 
@@ -59,7 +59,7 @@ public class SphericalCoordinate extends AbstractCoordinate {
     }
 
     private void assertAttributeIsInRange(double input, DoublePredicate inputCheck, String inputName, boolean asArgument) {
-        if (inputCheck.test(input)) {
+        if (!inputCheck.test(input)) {
             if (asArgument) {
                 throw new IllegalArgumentException(inputName + " out of bounds");
             } else {
