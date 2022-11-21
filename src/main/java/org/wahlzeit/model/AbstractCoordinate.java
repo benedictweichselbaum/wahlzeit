@@ -5,26 +5,48 @@ import org.wahlzeit.utils.MathUtil;
 public abstract class AbstractCoordinate implements Coordinate {
 
     protected static final double EQUALS_DELTA = 0.0009;
+
+    /**
+     * abstract method checking the invariants
+     * Has to be implemented in concrete classes
+     */
+    protected abstract void assertClassInvariants();
     @Override
     public double getCartesianDistance(Coordinate coordinate) {
-        return this.calculateEuclidianDistance(coordinate.asCartesianCoordinate());
+        assertClassInvariants();
+        assertCoordinateIsNotNull(coordinate);
+        double distance = this.calculateEuclidianDistance(coordinate.asCartesianCoordinate());
+        assert distance >= 0;
+        assertClassInvariants();
+
+        return distance;
     }
 
     @Override
     public double getCentralAngle(Coordinate coordinate) {
+        assertClassInvariants();
+        assertCoordinateIsNotNull(coordinate);
         CartesianCoordinate cartesianCoordinate = coordinate.asCartesianCoordinate();
         CartesianCoordinate currentCoordinate = this.asCartesianCoordinate();
-        return Math.acos(
+        double centralAngle = Math.acos(
                 MathUtil.dot(
                         new double[]{currentCoordinate.getX(), currentCoordinate.getY(), currentCoordinate.getZ()},
                         new double[]{cartesianCoordinate.getX(), cartesianCoordinate.getY(), cartesianCoordinate.getZ()}
                 )
         );
+        assert centralAngle >= 0;
+        assertClassInvariants();
+        return centralAngle;
     }
 
     @Override
     public boolean isEqual(Coordinate coordinate) {
-        return isEqualCartesian(coordinate.asCartesianCoordinate());
+        assertClassInvariants();
+        assertCoordinateIsNotNull(coordinate);
+        boolean isEqual = isEqualCartesian(coordinate.asCartesianCoordinate());
+        assertClassInvariants();
+
+        return isEqual;
     }
 
     @Override
@@ -34,6 +56,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 
     @Override
     public int hashCode() {
+        assertClassInvariants();
         CartesianCoordinate currentCoordinate = this.asCartesianCoordinate();
 
         long result = 120L;
@@ -41,6 +64,8 @@ public abstract class AbstractCoordinate implements Coordinate {
         result = 37 * result + Double.doubleToLongBits(Math.round(currentCoordinate.getX() * 100.0) / 100.0);
         result = 37 * result + Double.doubleToLongBits(Math.round(currentCoordinate.getY() * 100.0) / 100.0);
         result = 37 * result + Double.doubleToLongBits(Math.round(currentCoordinate.getZ() * 100.0) / 100.0);
+
+        assertClassInvariants();
 
         return (int) result;
     }
@@ -70,5 +95,11 @@ public abstract class AbstractCoordinate implements Coordinate {
         return Math.abs(currentCoordinate.getX() - coordinate.getX()) <= EQUALS_DELTA &&
                 Math.abs(currentCoordinate.getY() - coordinate.getY()) <= EQUALS_DELTA &&
                 Math.abs(currentCoordinate.getZ() - coordinate.getZ()) <= EQUALS_DELTA;
+    }
+
+    private void assertCoordinateIsNotNull(Coordinate coordinate) {
+        if (coordinate == null) {
+            throw new IllegalArgumentException("Coordinate can not be null");
+        }
     }
 }
