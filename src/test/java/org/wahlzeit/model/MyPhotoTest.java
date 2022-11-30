@@ -84,7 +84,7 @@ public class MyPhotoTest {
         when(resultSet.getString("title")).thenReturn("Title");
         when(resultSet.getString("description")).thenReturn("Description");
 
-        when(locationManager.getLocation(any())).thenReturn(new Location(1,1, 2, 3));
+        when(locationManager.getLocation(any())).thenReturn(new Location(1,1, 2, 3, CoordinateType.SPHERICAL));
 
         doNothing().when(resultSet).updateInt(anyString(), anyInt());
         doNothing().when(resultSet).updateString(anyString(), anyString());

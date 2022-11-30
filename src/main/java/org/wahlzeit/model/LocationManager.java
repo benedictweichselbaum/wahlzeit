@@ -1,5 +1,6 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.model.exceptions.LocationCreationException;
 import org.wahlzeit.services.ObjectManager;
 import org.wahlzeit.services.Persistent;
 import org.wahlzeit.services.SysLog;
@@ -29,7 +30,7 @@ public class LocationManager extends ObjectManager {
             try {
                 PreparedStatement stmt = getReadingStatement("SELECT * FROM locations WHERE id = ?");
                 location = (Location) readObject(stmt, id);
-            } catch (SQLException ex) {
+            } catch (SQLException | ClassCastException ex) {
                 SysLog.logThrowable(ex);
             }
         }
@@ -81,14 +82,12 @@ public class LocationManager extends ObjectManager {
         return new Location(rset);
     }
 
-    public Location createLocation(double x, double y, double z) {
+    public Location createLocation(double a, double b, double c, CoordinateType coordinateType) throws LocationCreationException {
         int maxId = locationCache.keySet().stream().mapToInt(i -> i).max().orElse(START_ID);
-        Location newLocation = new Location(maxId + 1, x, y, z);
+        Location newLocation = new Location(maxId + 1, a, b, c, coordinateType);
         addLocation(newLocation);
         return newLocation;
     }
-
-
 
     public static LocationManager getInstance() {
         return instance;

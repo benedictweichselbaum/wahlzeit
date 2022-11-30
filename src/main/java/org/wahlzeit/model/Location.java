@@ -1,6 +1,9 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.model.exceptions.LocationCreationException;
+import org.wahlzeit.model.exceptions.NullArgumentException;
 import org.wahlzeit.services.DataObject;
+import org.wahlzeit.services.SysLog;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,8 +14,13 @@ public class Location extends DataObject {
     protected Integer id = null;
     protected Coordinate coordinate;
 
-    public Location(double x, double y, double z) {
-        this.coordinate = new CartesianCoordinate(x, y, z);
+    public Location(double a, double b, double c, CoordinateType coordinateType) throws LocationCreationException {
+        try {
+            this.coordinate = coordinateType == CoordinateType.CARTESIAN ? new CartesianCoordinate(a, b, c) : new SphericalCoordinate(a, b, c);
+        } catch (IllegalArgumentException e) {
+            SysLog.logThrowable(e);
+            throw new LocationCreationException(e);
+        }
         incWriteCount();
     }
 
@@ -21,9 +29,14 @@ public class Location extends DataObject {
         incWriteCount();
     }
 
-    public Location(Integer id, double x, double y, double z) {
+    public Location(Integer id, double a, double b, double c, CoordinateType coordinateType) throws LocationCreationException {
         this.id = id;
-        this.coordinate = new CartesianCoordinate(x, y, z);
+        try {
+            this.coordinate = coordinateType == CoordinateType.CARTESIAN ? new CartesianCoordinate(a, b, c) : new SphericalCoordinate(a, b, c);
+        } catch (IllegalArgumentException e) {
+            SysLog.logThrowable(e);
+            throw new LocationCreationException(e);
+        }
         incWriteCount();
     }
 
@@ -31,12 +44,12 @@ public class Location extends DataObject {
         return coordinate;
     }
 
-    public void setCoordinate(Coordinate coordinate) {
+    public void setCoordinate(Coordinate coordinate) throws NullArgumentException {
         if (coordinate != null) {
             this.coordinate = coordinate;
             incWriteCount();
         } else {
-            throw new IllegalArgumentException("coordinate can not be null");
+            throw new NullArgumentException("Coordinate can not be null");
         }
     }
 
