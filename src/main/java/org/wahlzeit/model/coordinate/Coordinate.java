@@ -1,9 +1,9 @@
-package org.wahlzeit.model;
+package org.wahlzeit.model.coordinate;
 
 /**
  * Coordinate interface for location object
  */
-public interface Coordinate {
+public interface Coordinate extends Cloneable {
 
     /**
      * Returns a cartesian representation of the coordinate

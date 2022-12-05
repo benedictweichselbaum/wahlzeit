@@ -1,5 +1,7 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.model.coordinate.Coordinate;
+import org.wahlzeit.model.coordinate.SharedCoordinateFactory;
 import org.wahlzeit.model.exceptions.LocationCreationException;
 import org.wahlzeit.model.exceptions.NullArgumentException;
 import org.wahlzeit.services.DataObject;
@@ -16,7 +18,7 @@ public class Location extends DataObject {
 
     public Location(double a, double b, double c, CoordinateType coordinateType) throws LocationCreationException {
         try {
-            this.coordinate = coordinateType == CoordinateType.CARTESIAN ? new CartesianCoordinate(a, b, c) : new SphericalCoordinate(a, b, c);
+            coordinate = SharedCoordinateFactory.getInstance().getCoordinate(a, b, c, coordinateType);
         } catch (IllegalArgumentException e) {
             SysLog.logThrowable(e);
             throw new LocationCreationException(e);
@@ -32,7 +34,7 @@ public class Location extends DataObject {
     public Location(Integer id, double a, double b, double c, CoordinateType coordinateType) throws LocationCreationException {
         this.id = id;
         try {
-            this.coordinate = coordinateType == CoordinateType.CARTESIAN ? new CartesianCoordinate(a, b, c) : new SphericalCoordinate(a, b, c);
+            this.coordinate = SharedCoordinateFactory.getInstance().getCoordinate(a, b, c, coordinateType);
         } catch (IllegalArgumentException e) {
             SysLog.logThrowable(e);
             throw new LocationCreationException(e);
@@ -61,11 +63,13 @@ public class Location extends DataObject {
     @Override
     public void readFrom(ResultSet rset) throws SQLException {
         id = rset.getInt("id");
-        coordinate = new CartesianCoordinate(
+        coordinate = SharedCoordinateFactory.getInstance().getCoordinate(
                 rset.getDouble("location_x"),
                 rset.getDouble("location_y"),
-                rset.getDouble("location_z")
+                rset.getDouble("location_z"),
+                CoordinateType.CARTESIAN
         );
+
     }
 
     @Override

@@ -1,4 +1,6 @@
-package org.wahlzeit.model;
+package org.wahlzeit.model.coordinate;
+
+import org.wahlzeit.model.CoordinateType;
 
 import java.util.function.DoublePredicate;
 
@@ -13,13 +15,13 @@ public class SphericalCoordinate extends AbstractCoordinate {
     static final DoublePredicate THETA_PREDICATE = t -> t >= 0 && t <= 2 * Math.PI;
     static final DoublePredicate RADIUS_PREDICATE = r -> r >= 0;
 
-    private double phi;
+    protected final double phi;
 
-    private double theta;
+    protected final double theta;
 
-    private double radius;
+    protected final double radius;
 
-    public SphericalCoordinate(double phi, double theta, double radius) {
+    SphericalCoordinate(double phi, double theta, double radius) {
         assertAllAttributesAreInRange(phi, theta, radius, true);
         this.phi = phi;
         this.theta = theta;
@@ -52,6 +54,15 @@ public class SphericalCoordinate extends AbstractCoordinate {
         return this;
     }
 
+    @Override
+    protected Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            return new SphericalCoordinate(this.getPhi(), this.getTheta(), this.getRadius());
+        }
+    }
+
     private void assertAllAttributesAreInRange(double phi, double theta, double radius, boolean asArgument) {
         assertAttributeIsInRange(phi, PHI_PREDICATE, "phi", asArgument);
         assertAttributeIsInRange(theta, THETA_PREDICATE, "theta", asArgument);
@@ -82,13 +93,13 @@ public class SphericalCoordinate extends AbstractCoordinate {
     /**
      * sets the phi field in the object
      * @pre phi >= 0 && phi <= PI
-     * @param phi the inserted phi value
+     * @param phiToSet the inserted phi value
+     * @return new and modified coordinate
      */
-    public void setPhi(double phi) {
+    public SphericalCoordinate setPhi(double phiToSet) {
         assertClassInvariants();
-        assertAttributeIsInRange(phi, PHI_PREDICATE, "phi", true);
-        this.phi = phi;
-        assertClassInvariants();
+        assertAttributeIsInRange(phiToSet, PHI_PREDICATE, "phi", true);
+        return SharedCoordinateFactory.getInstance().getCoordinate(phiToSet, this.getTheta(), this.getRadius(), CoordinateType.SPHERICAL).asSphericalCoordinate();
     }
 
     /**
@@ -105,13 +116,13 @@ public class SphericalCoordinate extends AbstractCoordinate {
     /**
      * sets the theta field in the object
      * @pre theta >= 0 && theta <= 2 * PI
-     * @param theta the inserted phi value
+     * @param thetaToSet the inserted phi value
+     * @return new and modified coordinate
      */
-    public void setTheta(double theta) {
+    public SphericalCoordinate setTheta(double thetaToSet) {
         assertClassInvariants();
-        assertAttributeIsInRange(theta, THETA_PREDICATE, "theta", true);
-        this.theta = theta;
-        assertClassInvariants();
+        assertAttributeIsInRange(thetaToSet, THETA_PREDICATE, "theta", true);
+        return SharedCoordinateFactory.getInstance().getCoordinate(this.getPhi(), thetaToSet, this.getRadius(), CoordinateType.SPHERICAL).asSphericalCoordinate();
     }
 
     /**
@@ -128,12 +139,12 @@ public class SphericalCoordinate extends AbstractCoordinate {
     /**
      * sets the radius field in the object
      * @pre radius >= 0
-     * @param radius the inserted radius value
+     * @param radiusToSet the inserted radius value
+     * @return new and modified coordinate
      */
-    public void setRadius(double radius) {
+    public SphericalCoordinate setRadius(double radiusToSet) {
         assertClassInvariants();
-        assertAttributeIsInRange(radius, RADIUS_PREDICATE, "radius", true);
-        this.radius = radius;
-        assertClassInvariants();
+        assertAttributeIsInRange(radiusToSet, RADIUS_PREDICATE, "radius", true);
+        return SharedCoordinateFactory.getInstance().getCoordinate(getPhi(), getTheta(), radiusToSet, CoordinateType.SPHERICAL).asSphericalCoordinate();
     }
 }

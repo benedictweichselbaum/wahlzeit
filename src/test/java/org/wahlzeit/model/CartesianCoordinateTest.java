@@ -2,6 +2,10 @@ package org.wahlzeit.model;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.wahlzeit.model.coordinate.CartesianCoordinate;
+import org.wahlzeit.model.coordinate.Coordinate;
+import org.wahlzeit.model.coordinate.SharedCoordinateFactory;
+import org.wahlzeit.model.coordinate.SphericalCoordinate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -13,9 +17,12 @@ public class CartesianCoordinateTest {
 
     private CartesianCoordinate coordinate;
 
+    private SharedCoordinateFactory factory;
+
     @Before
     public void setUp() {
-        coordinate = new CartesianCoordinate(0, 0, 0);
+        factory = SharedCoordinateFactory.getInstance();
+        coordinate = factory.getCoordinate(0, 0, 0, CoordinateType.CARTESIAN).asCartesianCoordinate();
     }
 
     @Test
@@ -28,7 +35,7 @@ public class CartesianCoordinateTest {
 
     @Test
     public void testAsSphericalCoordinate() {
-        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(-1, 0, 0);
+        CartesianCoordinate cartesianCoordinate = factory.getCoordinate(-1, 0, 0, CoordinateType.CARTESIAN).asCartesianCoordinate();
         SphericalCoordinate sphericalCoordinate = cartesianCoordinate.asSphericalCoordinate();
 
         assertEquals(1.0, sphericalCoordinate.getRadius(), 0.00001);
@@ -38,35 +45,35 @@ public class CartesianCoordinateTest {
 
     @Test
     public void testGetCartesianDistance() {
-        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(1, 1, 0);
+        CartesianCoordinate cartesianCoordinate = factory.getCoordinate(1, 1, 0, CoordinateType.CARTESIAN).asCartesianCoordinate();
 
         assertEquals(Math.sqrt(2), coordinate.getCartesianDistance(cartesianCoordinate), 0.00001);
     }
 
     @Test
     public void testGetCentralAngle() {
-        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(0, 0, 1);
+        CartesianCoordinate cartesianCoordinate = factory.getCoordinate(0, 0, 1, CoordinateType.CARTESIAN).asCartesianCoordinate();
 
         assertEquals(Math.PI / 2, coordinate.getCentralAngle(cartesianCoordinate), 0.0001);
     }
 
     @Test
     public void testIsEqual() {
-        Coordinate compareCoordinate1 = new CartesianCoordinate(0, 0, 0);
-        Coordinate compareCoordinate2 = new CartesianCoordinate(0.1, 0, 0);
-        Coordinate compareCoordinate3 = new CartesianCoordinate(0.00001, 0, 0);
+        Coordinate compareCoordinate1 = factory.getCoordinate(0, 0, 0, CoordinateType.CARTESIAN).asCartesianCoordinate();
+        Coordinate compareCoordinate2 = factory.getCoordinate(0.1, 0, 0, CoordinateType.CARTESIAN).asCartesianCoordinate();
+        Coordinate compareCoordinate3 = factory.getCoordinate(0.00001, 0, 0, CoordinateType.CARTESIAN).asCartesianCoordinate();
 
         assertTrue(coordinate.isEqual(coordinate));
         assertTrue(coordinate.isEqual(compareCoordinate1));
         assertFalse(coordinate.isEqual(compareCoordinate2));
-        assertTrue(coordinate.isEqual(compareCoordinate3));
+        assertFalse(coordinate.isEqual(compareCoordinate3));
     }
 
     @Test
     public void testEquals() {
         Object someOtherObject = new Object();
-        Coordinate compareCoordinateEquals = new CartesianCoordinate(0, 0, 0);
-        Coordinate compareCoordinateNotEquals = new CartesianCoordinate(1, 0 , 0);
+        Coordinate compareCoordinateEquals = factory.getCoordinate(0, 0, 0, CoordinateType.CARTESIAN).asCartesianCoordinate();
+        Coordinate compareCoordinateNotEquals = factory.getCoordinate(2, 20, 0, CoordinateType.CARTESIAN).asCartesianCoordinate();
 
         // assert(Not)Equals-Method uses the implemented equals()-Method
         assertNotEquals(coordinate, someOtherObject);
@@ -76,11 +83,11 @@ public class CartesianCoordinateTest {
 
     @Test
     public void testHashCode() {
-        Coordinate compareCoordinate1 = new CartesianCoordinate(0, 0, 0);
-        Coordinate compareCoordinate2 = new CartesianCoordinate(0.1, 0, 0);
-        Coordinate compareCoordinate3 = new CartesianCoordinate(0.00001, 0, 0);
+        Coordinate compareCoordinate1 = factory.getCoordinate(0, 0, 0, CoordinateType.CARTESIAN).asCartesianCoordinate();
+        Coordinate compareCoordinate2 = factory.getCoordinate(0.1, 0, 0, CoordinateType.CARTESIAN).asCartesianCoordinate();
+        Coordinate compareCoordinate3 = factory.getCoordinate(0.00001, 0, 0, CoordinateType.CARTESIAN).asCartesianCoordinate();
 
         assertNotEquals(compareCoordinate1.hashCode(), compareCoordinate2.hashCode());
-        assertEquals(compareCoordinate1.hashCode(), compareCoordinate3.hashCode());
+        assertNotEquals(compareCoordinate1.hashCode(), compareCoordinate3.hashCode());
     }
 }

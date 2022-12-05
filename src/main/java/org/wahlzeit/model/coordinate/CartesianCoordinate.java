@@ -1,8 +1,10 @@
-package org.wahlzeit.model;
+package org.wahlzeit.model.coordinate;
 
-import static org.wahlzeit.model.SphericalCoordinate.PHI_PREDICATE;
-import static org.wahlzeit.model.SphericalCoordinate.RADIUS_PREDICATE;
-import static org.wahlzeit.model.SphericalCoordinate.THETA_PREDICATE;
+import org.wahlzeit.model.CoordinateType;
+
+import static org.wahlzeit.model.coordinate.SphericalCoordinate.PHI_PREDICATE;
+import static org.wahlzeit.model.coordinate.SphericalCoordinate.RADIUS_PREDICATE;
+import static org.wahlzeit.model.coordinate.SphericalCoordinate.THETA_PREDICATE;
 
 /**
  * Cartesian Coordinate.
@@ -10,13 +12,13 @@ import static org.wahlzeit.model.SphericalCoordinate.THETA_PREDICATE;
  */
 public class CartesianCoordinate extends AbstractCoordinate {
 
-    protected double x;
+    protected final double x;
 
-    protected double y;
+    protected final double y;
 
-    protected double z;
+    protected final double z;
 
-    public CartesianCoordinate(double x, double y, double z) {
+    CartesianCoordinate(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -52,6 +54,15 @@ public class CartesianCoordinate extends AbstractCoordinate {
         return sphericalCoordinate;
     }
 
+    @Override
+    protected Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            return new CartesianCoordinate(this.getX(), this.getY(), this.getZ());
+        }
+    }
+
     /**
      * Return the x field
      * @return this.x
@@ -63,12 +74,12 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
     /**
      * Sets the x field
-     * @param x variable for the x coordinate
+     * @param xToSet variable for the x coordinate
+     * @return new and modified coordinate
      */
-    public void setX(double x) {
+    public CartesianCoordinate setX(double xToSet) {
         assertClassInvariants();
-        this.x = x;
-        assertClassInvariants();
+        return SharedCoordinateFactory.getInstance().getCoordinate(xToSet, this.getY(), this.getZ(), CoordinateType.CARTESIAN).asCartesianCoordinate();
     }
 
     /**
@@ -82,12 +93,12 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
     /**
      * Sets the x field
-     * @param y variable for the y coordinate
+     * @param yToSet variable for the y coordinate
+     * @return new and modified coordinate
      */
-    public void setY(double y) {
+    public CartesianCoordinate setY(double yToSet) {
         assertClassInvariants();
-        this.y = y;
-        assertClassInvariants();
+        return SharedCoordinateFactory.getInstance().getCoordinate(this.getX(), yToSet, this.getZ(), CoordinateType.CARTESIAN).asCartesianCoordinate();
     }
 
     /**
@@ -101,11 +112,11 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
     /**
      * Sets the x field
-     * @param z variable for the z coordinate
+     * @param zToSet variable for the z coordinate
+     * @return new and modified coordinate
      */
-    public void setZ(double z) {
+    public CartesianCoordinate setZ(double zToSet) {
         assertClassInvariants();
-        this.z = z;
-        assertClassInvariants();
+        return SharedCoordinateFactory.getInstance().getCoordinate(this.getX(), this.getY(), zToSet, CoordinateType.CARTESIAN).asCartesianCoordinate();
     }
 }

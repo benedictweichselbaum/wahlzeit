@@ -1,4 +1,4 @@
-package org.wahlzeit.model;
+package org.wahlzeit.model.coordinate;
 
 import org.wahlzeit.utils.MathUtil;
 
@@ -41,12 +41,8 @@ public abstract class AbstractCoordinate implements Coordinate {
 
     @Override
     public boolean isEqual(Coordinate coordinate) {
-        assertClassInvariants();
-        assertCoordinateIsNotNull(coordinate);
-        boolean isEqual = isEqualCartesian(coordinate.asCartesianCoordinate());
-        assertClassInvariants();
-
-        return isEqual;
+        // can be done because the coordinates are shared values
+        return this == coordinate;
     }
 
     @Override
@@ -59,15 +55,11 @@ public abstract class AbstractCoordinate implements Coordinate {
         assertClassInvariants();
         CartesianCoordinate currentCoordinate = this.asCartesianCoordinate();
 
-        long result = 120L;
-
-        result = 37 * result + Double.doubleToLongBits(Math.round(currentCoordinate.getX() * 100.0) / 100.0);
-        result = 37 * result + Double.doubleToLongBits(Math.round(currentCoordinate.getY() * 100.0) / 100.0);
-        result = 37 * result + Double.doubleToLongBits(Math.round(currentCoordinate.getZ() * 100.0) / 100.0);
+        int hash = (currentCoordinate.getX() + Double.toString(currentCoordinate.getX()) + currentCoordinate.getX()).hashCode();
 
         assertClassInvariants();
 
-        return (int) result;
+        return hash;
     }
     private double calculateEuclidianDistance(CartesianCoordinate coordinate) {
 
