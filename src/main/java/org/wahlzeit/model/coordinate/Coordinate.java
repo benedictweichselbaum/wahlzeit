@@ -1,5 +1,7 @@
 package org.wahlzeit.model.coordinate;
 
+import org.wahlzeit.model.CoordinateType;
+
 /**
  * Coordinate interface for location object
  */
@@ -47,4 +49,6 @@ public interface Coordinate extends Cloneable {
      * @return true if equal according to definition (DELTA), false else
      */
     boolean isEqual(Coordinate coordinate);
+
+    CoordinateType getType();
 }

@@ -41,10 +41,11 @@ public class CartesianCoordinate extends AbstractCoordinate {
     @Override
     public SphericalCoordinate asSphericalCoordinate() {
         assertClassInvariants();
-        SphericalCoordinate sphericalCoordinate = new SphericalCoordinate(
+        SphericalCoordinate sphericalCoordinate = (SphericalCoordinate) SharedCoordinateFactory.getInstance().getCoordinate(
                 Math.atan2(Math.sqrt(x * x + y * y), z),
                 Math.atan2(y, x),
-                Math.sqrt(x * x + y * y + z * z)
+                Math.sqrt(x * x + y * y + z * z),
+                CoordinateType.SPHERICAL
         );
         assert PHI_PREDICATE.test(sphericalCoordinate.getPhi());
         assert THETA_PREDICATE.test(sphericalCoordinate.getTheta());
@@ -55,12 +56,8 @@ public class CartesianCoordinate extends AbstractCoordinate {
     }
 
     @Override
-    protected Object clone() {
-        try {
-            return super.clone();
-        } catch (CloneNotSupportedException e) {
-            return new CartesianCoordinate(this.getX(), this.getY(), this.getZ());
-        }
+    public CoordinateType getType() {
+        return CoordinateType.CARTESIAN;
     }
 
     /**

@@ -66,7 +66,7 @@ public class SphericalCoordinateTest {
         SphericalCoordinate notTheSameCoord = factory.getCoordinate(Math.PI / 2 + 0.5, Math.PI, 1.0, CoordinateType.SPHERICAL).asSphericalCoordinate();
 
         assertTrue(sphericalCoordinate.isEqual(sameCoord));
-        assertTrue(sphericalCoordinate.isEqual(almostSameCoord));
+        assertFalse(sphericalCoordinate.isEqual(almostSameCoord));
         assertFalse(sphericalCoordinate.isEqual(notTheSameCoord));
     }
 

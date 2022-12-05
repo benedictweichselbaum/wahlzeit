@@ -2,6 +2,8 @@ package org.wahlzeit.model.coordinate;
 
 import org.wahlzeit.utils.MathUtil;
 
+import java.util.Objects;
+
 public abstract class AbstractCoordinate implements Coordinate {
 
     protected static final double EQUALS_DELTA = 0.0009;
@@ -42,7 +44,7 @@ public abstract class AbstractCoordinate implements Coordinate {
     @Override
     public boolean isEqual(Coordinate coordinate) {
         // can be done because the coordinates are shared values
-        return this == coordinate;
+        return this.hashCode() == coordinate.hashCode();
     }
 
     @Override
@@ -55,7 +57,7 @@ public abstract class AbstractCoordinate implements Coordinate {
         assertClassInvariants();
         CartesianCoordinate currentCoordinate = this.asCartesianCoordinate();
 
-        int hash = (currentCoordinate.getX() + Double.toString(currentCoordinate.getX()) + currentCoordinate.getX()).hashCode();
+        int hash = Objects.hash(currentCoordinate.getX(), currentCoordinate.getY(), currentCoordinate.getZ());
 
         assertClassInvariants();
 
@@ -99,5 +101,9 @@ public abstract class AbstractCoordinate implements Coordinate {
         if (number < 0) {
             throw new ArithmeticException("Result of method is smaller than zero");
         }
+    }
+
+    private double round(double number) {
+        return Math.round(number * 100.0) / 100.0;
     }
 }

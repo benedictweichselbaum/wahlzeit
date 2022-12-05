@@ -37,10 +37,11 @@ public class SphericalCoordinate extends AbstractCoordinate {
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
         assertClassInvariants();
-        CartesianCoordinate coordinate = new CartesianCoordinate(
+        CartesianCoordinate coordinate = (CartesianCoordinate) SharedCoordinateFactory.getInstance().getCoordinate(
             radius * Math.sin(phi) * Math.cos(theta),
             radius * Math.sin(phi) * Math.sin(theta),
-            radius * Math.cos(phi)
+            radius * Math.cos(phi),
+                CoordinateType.CARTESIAN
         );
         assertClassInvariants();
         return coordinate;
@@ -61,6 +62,11 @@ public class SphericalCoordinate extends AbstractCoordinate {
         } catch (CloneNotSupportedException e) {
             return new SphericalCoordinate(this.getPhi(), this.getTheta(), this.getRadius());
         }
+    }
+
+    @Override
+    public CoordinateType getType() {
+        return CoordinateType.SPHERICAL;
     }
 
     private void assertAllAttributesAreInRange(double phi, double theta, double radius, boolean asArgument) {

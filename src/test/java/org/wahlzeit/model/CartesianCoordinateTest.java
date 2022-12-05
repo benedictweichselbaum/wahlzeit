@@ -1,6 +1,7 @@
 package org.wahlzeit.model;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.wahlzeit.model.coordinate.CartesianCoordinate;
 import org.wahlzeit.model.coordinate.Coordinate;
@@ -23,6 +24,7 @@ public class CartesianCoordinateTest {
     public void setUp() {
         factory = SharedCoordinateFactory.getInstance();
         coordinate = factory.getCoordinate(0, 0, 0, CoordinateType.CARTESIAN).asCartesianCoordinate();
+        System.out.println("test");
     }
 
     @Test
@@ -59,9 +61,9 @@ public class CartesianCoordinateTest {
 
     @Test
     public void testIsEqual() {
-        Coordinate compareCoordinate1 = factory.getCoordinate(0, 0, 0, CoordinateType.CARTESIAN).asCartesianCoordinate();
-        Coordinate compareCoordinate2 = factory.getCoordinate(0.1, 0, 0, CoordinateType.CARTESIAN).asCartesianCoordinate();
-        Coordinate compareCoordinate3 = factory.getCoordinate(0.00001, 0, 0, CoordinateType.CARTESIAN).asCartesianCoordinate();
+        Coordinate compareCoordinate1 = factory.getCoordinate(0, 0, 0, CoordinateType.CARTESIAN);
+        Coordinate compareCoordinate2 = factory.getCoordinate(0.1, 0, 0, CoordinateType.CARTESIAN);
+        Coordinate compareCoordinate3 = factory.getCoordinate(0.00001, 0, 0, CoordinateType.CARTESIAN);
 
         assertTrue(coordinate.isEqual(coordinate));
         assertTrue(coordinate.isEqual(compareCoordinate1));

@@ -25,5 +25,6 @@ public class SharedCoordinateFactoryTest {
         assertEquals(coordinate1, coordinate);
         assertNotEquals(coordinate1, coordinate2);
         assertNotEquals(coordinate, coordinate3);
+        assertNotEquals(coordinate2, coordinate3);
     }
 }
