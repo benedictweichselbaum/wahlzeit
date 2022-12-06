@@ -5,7 +5,7 @@ import org.wahlzeit.model.CoordinateType;
 /**
  * Coordinate interface for location object
  */
-public interface Coordinate extends Cloneable {
+public interface Coordinate {
 
     /**
      * Returns a cartesian representation of the coordinate
