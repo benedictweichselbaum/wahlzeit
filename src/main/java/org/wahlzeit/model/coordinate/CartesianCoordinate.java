@@ -58,6 +58,15 @@ public class CartesianCoordinate extends AbstractCoordinate {
     }
 
     @Override
+    protected Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            return new CartesianCoordinate(this.getX(), this.getY(), this.getZ());
+        }
+    }
+
+    @Override
     public CoordinateType getType() {
         return CoordinateType.CARTESIAN;
     }
