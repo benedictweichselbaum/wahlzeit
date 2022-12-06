@@ -1,6 +1,7 @@
 package org.wahlzeit.model.coordinate;
 
 import org.wahlzeit.model.CoordinateType;
+import org.wahlzeit.utils.MathUtil;
 
 import static org.wahlzeit.model.coordinate.SphericalCoordinate.PHI_PREDICATE;
 import static org.wahlzeit.model.coordinate.SphericalCoordinate.RADIUS_PREDICATE;
@@ -41,10 +42,11 @@ public class CartesianCoordinate extends AbstractCoordinate {
     @Override
     public SphericalCoordinate asSphericalCoordinate() {
         assertClassInvariants();
+        double[] sphericalVector = MathUtil.cartesianToSpherical(new double[]{x, y, z});
         SphericalCoordinate sphericalCoordinate = (SphericalCoordinate) SharedCoordinateFactory.getInstance().getCoordinate(
-                Math.atan2(Math.sqrt(x * x + y * y), z),
-                Math.atan2(y, x),
-                Math.sqrt(x * x + y * y + z * z),
+                sphericalVector[0],
+                sphericalVector[1],
+                sphericalVector[2],
                 CoordinateType.SPHERICAL
         );
         assert PHI_PREDICATE.test(sphericalCoordinate.getPhi());

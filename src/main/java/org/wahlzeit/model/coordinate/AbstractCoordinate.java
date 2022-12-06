@@ -57,7 +57,7 @@ public abstract class AbstractCoordinate implements Coordinate {
         assertClassInvariants();
         CartesianCoordinate currentCoordinate = this.asCartesianCoordinate();
 
-        int hash = Objects.hash(currentCoordinate.getX(), currentCoordinate.getY(), currentCoordinate.getZ());
+        int hash = Objects.hash(round(currentCoordinate.getX()), round(currentCoordinate.getY()), round(currentCoordinate.getZ()));
 
         assertClassInvariants();
 
@@ -76,19 +76,6 @@ public abstract class AbstractCoordinate implements Coordinate {
                         distanceY * distanceY +
                         distanceZ * distanceZ
         );
-    }
-
-    /**
-     * Checks if coordinate is equal to a given one
-     * @param coordinate given coordinate
-     * @return true if equal, false else
-     */
-    private boolean isEqualCartesian(CartesianCoordinate coordinate) {
-        CartesianCoordinate currentCoordinate = this.asCartesianCoordinate();
-
-        return Math.abs(currentCoordinate.getX() - coordinate.getX()) <= EQUALS_DELTA &&
-                Math.abs(currentCoordinate.getY() - coordinate.getY()) <= EQUALS_DELTA &&
-                Math.abs(currentCoordinate.getZ() - coordinate.getZ()) <= EQUALS_DELTA;
     }
 
     private void assertCoordinateIsNotNull(Coordinate coordinate) {

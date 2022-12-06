@@ -1,6 +1,7 @@
 package org.wahlzeit.model.coordinate;
 
 import org.wahlzeit.model.CoordinateType;
+import org.wahlzeit.utils.MathUtil;
 
 import java.util.function.DoublePredicate;
 
@@ -11,9 +12,9 @@ import java.util.function.DoublePredicate;
  */
 public class SphericalCoordinate extends AbstractCoordinate {
 
-    static final DoublePredicate PHI_PREDICATE = p -> p >= 0 && p <= Math.PI;
-    static final DoublePredicate THETA_PREDICATE = t -> t >= 0 && t <= 2 * Math.PI;
-    static final DoublePredicate RADIUS_PREDICATE = r -> r >= 0;
+    public static final DoublePredicate PHI_PREDICATE = p -> p >= 0 && p <= Math.PI;
+    public static final DoublePredicate THETA_PREDICATE = t -> t >= 0 && t <= 2 * Math.PI;
+    public static final DoublePredicate RADIUS_PREDICATE = r -> r >= 0;
 
     protected final double phi;
 
@@ -37,10 +38,11 @@ public class SphericalCoordinate extends AbstractCoordinate {
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
         assertClassInvariants();
+        double[] cartesianVector = MathUtil.sphericalToCartesian(new double[]{phi, theta, radius});
         CartesianCoordinate coordinate = (CartesianCoordinate) SharedCoordinateFactory.getInstance().getCoordinate(
-            radius * Math.sin(phi) * Math.cos(theta),
-            radius * Math.sin(phi) * Math.sin(theta),
-            radius * Math.cos(phi),
+                cartesianVector[0],
+                cartesianVector[1],
+                cartesianVector[2],
                 CoordinateType.CARTESIAN
         );
         assertClassInvariants();

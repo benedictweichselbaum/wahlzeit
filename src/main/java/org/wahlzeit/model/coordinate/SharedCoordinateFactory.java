@@ -1,6 +1,7 @@
 package org.wahlzeit.model.coordinate;
 
 import org.wahlzeit.model.CoordinateType;
+import org.wahlzeit.utils.MathUtil;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -53,19 +54,22 @@ public class SharedCoordinateFactory {
     }
     
     private Coordinate createComplementingCoordinate(double a, double b, double c, CoordinateType existingType) {
+        double[] inputVector = new double[]{a, b, c};
         switch (existingType) {
             case SPHERICAL:
+                double[] cartesianVector = MathUtil.sphericalToCartesian(inputVector);
                 return new CartesianCoordinate(
-                        c * Math.sin(a) * Math.cos(b),
-                        c * Math.sin(a) * Math.sin(b),
-                        c * Math.cos(a)
+                        cartesianVector[0],
+                        cartesianVector[1],
+                        cartesianVector[2]
                 );
             case CARTESIAN:
             default:
+                double[] sphericalVector = MathUtil.cartesianToSpherical(inputVector);
                 return new SphericalCoordinate(
-                        Math.atan2(Math.sqrt(a * a + b * b), c),
-                        Math.atan2(b, a),
-                        Math.sqrt(a * a + b * b + c * c)
+                        sphericalVector[0],
+                        sphericalVector[1],
+                        sphericalVector[2]
                 );
         }
     }

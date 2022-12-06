@@ -68,7 +68,7 @@ public class CartesianCoordinateTest {
         assertTrue(coordinate.isEqual(coordinate));
         assertTrue(coordinate.isEqual(compareCoordinate1));
         assertFalse(coordinate.isEqual(compareCoordinate2));
-        assertFalse(coordinate.isEqual(compareCoordinate3));
+        assertTrue(coordinate.isEqual(compareCoordinate3));
     }
 
     @Test
@@ -90,6 +90,6 @@ public class CartesianCoordinateTest {
         Coordinate compareCoordinate3 = factory.getCoordinate(0.00001, 0, 0, CoordinateType.CARTESIAN).asCartesianCoordinate();
 
         assertNotEquals(compareCoordinate1.hashCode(), compareCoordinate2.hashCode());
-        assertNotEquals(compareCoordinate1.hashCode(), compareCoordinate3.hashCode());
+        assertEquals(compareCoordinate1.hashCode(), compareCoordinate3.hashCode());
     }
 }
