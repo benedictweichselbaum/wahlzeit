@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @PatternInstance(
         patternName = "Flyweight",
-        participants = {"CartesianCoordinate", "SphericalCoordinate"}
+        participants = {"Coordinate", "CartesianCoordinate", "SphericalCoordinate"}
 )
 public class SharedCoordinateFactory {
 
