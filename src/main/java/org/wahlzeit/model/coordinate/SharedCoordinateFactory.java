@@ -1,5 +1,6 @@
 package org.wahlzeit.model.coordinate;
 
+import org.wahlzeit.annotations.PatternInstance;
 import org.wahlzeit.model.CoordinateType;
 import org.wahlzeit.utils.MathUtil;
 
@@ -9,6 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@PatternInstance(
+        patternName = "Flyweight",
+        participants = {"CartesianCoordinate", "SphericalCoordinate"}
+)
 public class SharedCoordinateFactory {
 
     private static final SharedCoordinateFactory SHARED_COORDINATE_FACTORY = new SharedCoordinateFactory();

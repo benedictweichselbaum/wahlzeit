@@ -8,12 +8,17 @@ package org.wahlzeit.model;
 import java.util.*;
 import java.sql.*;
 
+import org.wahlzeit.annotations.PatternInstance;
 import org.wahlzeit.services.*;
 import org.wahlzeit.services.mailing.*;
 
 /**
  * The UserManager provides access to and manages Users (including Moderators and Administrators).
  */
+@PatternInstance(
+		patternName = "Singleton",
+		participants = {}
+)
 public class UserManager extends ObjectManager {
 
 	/**

@@ -1,8 +1,16 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.annotations.PatternInstance;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@PatternInstance(
+        patternName = "AbstractFactory",
+        participants = {
+                "PhotoFactory"
+        }
+)
 public class MyPhotoFactory extends PhotoFactory {
 
     private MyPhotoFactory() {

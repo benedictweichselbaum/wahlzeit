@@ -1,5 +1,6 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.annotations.PatternInstance;
 import org.wahlzeit.services.EmailAddress;
 import org.wahlzeit.services.Language;
 import org.wahlzeit.utils.StringUtil;
@@ -7,6 +8,12 @@ import org.wahlzeit.utils.StringUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@PatternInstance(
+        patternName = "AbstractFactory",
+        participants = {
+                "Photo"
+        }
+)
 public class MyPhoto extends Photo {
 
     protected String title;

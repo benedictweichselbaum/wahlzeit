@@ -1,5 +1,6 @@
 package org.wahlzeit.model.coordinate;
 
+import org.wahlzeit.annotations.PatternInstance;
 import org.wahlzeit.model.CoordinateType;
 import org.wahlzeit.utils.MathUtil;
 
@@ -11,6 +12,10 @@ import static org.wahlzeit.model.coordinate.SphericalCoordinate.THETA_PREDICATE;
  * Cartesian Coordinate.
  * No invariants necessary. All values for x, y and z are allowed
  */
+@PatternInstance(
+        patternName = "(Shared) Value Object",
+        participants = {"SharedCoordinateFactory"}
+)
 public class CartesianCoordinate extends AbstractCoordinate {
 
     protected final double x;

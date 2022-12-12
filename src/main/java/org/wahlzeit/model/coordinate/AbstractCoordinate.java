@@ -1,5 +1,6 @@
 package org.wahlzeit.model.coordinate;
 
+import org.wahlzeit.annotations.PatternInstance;
 import org.wahlzeit.utils.MathUtil;
 
 import java.util.Objects;
@@ -14,6 +15,10 @@ public abstract class AbstractCoordinate implements Coordinate {
      */
     protected abstract void assertClassInvariants();
     @Override
+    @PatternInstance(
+            patternName = "Template method",
+            participants = {"CartesianCoordinate", "SphericalCoordinate"}
+    )
     public double getCartesianDistance(Coordinate coordinate) {
         assertClassInvariants();
         assertCoordinateIsNotNull(coordinate);
@@ -25,6 +30,10 @@ public abstract class AbstractCoordinate implements Coordinate {
     }
 
     @Override
+    @PatternInstance(
+            patternName = "Template method",
+            participants = {"CartesianCoordinate", "SphericalCoordinate"}
+    )
     public double getCentralAngle(Coordinate coordinate) {
         assertClassInvariants();
         assertCoordinateIsNotNull(coordinate);
@@ -53,6 +62,10 @@ public abstract class AbstractCoordinate implements Coordinate {
     }
 
     @Override
+    @PatternInstance(
+            patternName = "Template method",
+            participants = {"CartesianCoordinate", "SphericalCoordinate"}
+    )
     public int hashCode() {
         assertClassInvariants();
         CartesianCoordinate currentCoordinate = this.asCartesianCoordinate();

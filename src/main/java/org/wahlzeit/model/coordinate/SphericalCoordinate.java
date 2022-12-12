@@ -1,5 +1,6 @@
 package org.wahlzeit.model.coordinate;
 
+import org.wahlzeit.annotations.PatternInstance;
 import org.wahlzeit.model.CoordinateType;
 import org.wahlzeit.utils.MathUtil;
 
@@ -10,6 +11,10 @@ import java.util.function.DoublePredicate;
  * @invariant theta >= 0 && theta <= 2 * PI
  * @invariant radius >= 0
  */
+@PatternInstance(
+        patternName = "(Shared) Value Object",
+        participants = {"SharedCoordinateFactory"}
+)
 public class SphericalCoordinate extends AbstractCoordinate {
 
     public static final DoublePredicate PHI_PREDICATE = p -> p >= 0 && p <= Math.PI;
