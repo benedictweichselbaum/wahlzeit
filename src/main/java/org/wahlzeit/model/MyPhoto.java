@@ -1,6 +1,7 @@
 package org.wahlzeit.model;
 
 import org.wahlzeit.annotations.PatternInstance;
+import org.wahlzeit.model.flower.Flower;
 import org.wahlzeit.services.EmailAddress;
 import org.wahlzeit.services.Language;
 import org.wahlzeit.utils.StringUtil;
@@ -19,6 +20,8 @@ public class MyPhoto extends Photo {
     protected String title;
 
     protected String description;
+
+    protected Flower flower;
 
     public MyPhoto() {
         super();
@@ -104,5 +107,13 @@ public class MyPhoto extends Photo {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Flower getFlower() {
+        return flower;
+    }
+
+    public void setFlower(Flower flower) {
+        this.flower = flower;
     }
 }

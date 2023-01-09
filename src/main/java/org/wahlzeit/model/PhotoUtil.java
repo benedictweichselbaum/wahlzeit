@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.image.*;
 import javax.imageio.*;
 
+import org.wahlzeit.model.flower.FlowerManager;
 import org.wahlzeit.services.*;
 
 /**
@@ -22,6 +23,8 @@ public class PhotoUtil {
 	private static final double DEFAULT_LOCATION_Y = 0;
 	private static final double DEFAULT_LOCATION_Z = 0;
 
+	private static final String DEFAULT_FLOWER_TYPE = "Test Typ für Blumen";
+
 	
 	/**
 	 * 
@@ -31,6 +34,8 @@ public class PhotoUtil {
 
 		// Set to default location as long as the Frontend does not give the proper information to ensure the application runs properly
 		result.setLocation(LocationManager.getInstance().createLocation(DEFAULT_LOCATION_X, DEFAULT_LOCATION_Y, DEFAULT_LOCATION_Z, CoordinateType.CARTESIAN));
+
+		result.setFlower(FlowerManager.getInstance().createFlower(DEFAULT_FLOWER_TYPE));
 
 		result.setTitle("Default Title");
 		result.setDescription("Default Description");

@@ -22,6 +22,17 @@ CREATE TABLE locations (
        location_z double precision
 );
 
+CREATE TABLE flower_types(
+    id integer PRIMARY KEY,
+    name text,
+    supertype integer REFERENCES flower_types(id)
+);
+
+CREATE TABLE flowers(
+        id integer PRIMARY KEY,
+        flower_type integer REFERENCES flower_types(id)
+);
+
 CREATE TABLE photos (
 	id integer PRIMARY KEY,
 	owner_id integer REFERENCES users(id),
@@ -39,7 +50,8 @@ CREATE TABLE photos (
 	creation_time bigint,
 	location integer REFERENCES locations(id),
 	title text,
-	description text
+	description text,
+	flower integer REFERENCES flowers(id)
 );
 
 CREATE TABLE tags (
