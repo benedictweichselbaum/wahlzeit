@@ -27,10 +27,21 @@ public class MyPhoto extends Photo {
         super();
     }
 
+    /**
+     * Constructor for a new MyPhoto from a ResultSet.
+     * Calls the constructor of the super type.
+     * @param rset ResultSet for new MyPhoto
+     * @throws SQLException exception from handling the ResultSet
+     */
     public MyPhoto(ResultSet rset) throws SQLException {
         super(rset);
     }
 
+    /**
+     * Constructor for a new MyPhoto from an ID.
+     * Calls the constructor of the super type
+     * @param id new ID
+     */
     public MyPhoto(PhotoId id) {
         super(id);
     }

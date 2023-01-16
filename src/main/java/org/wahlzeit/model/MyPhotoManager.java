@@ -35,6 +35,13 @@ public class MyPhotoManager extends PhotoManager {
         return photoManager;
     }
 
+    /**
+     * Method for creating a MyPhoto from a database result set.
+     * Calls the factory for the creation of the instance.
+     * @param rset result set from the database
+     * @return Instance of MyPhoto with attributes from the result set.
+     * @throws SQLException exception with handling the result set
+     */
     @Override
     protected MyPhoto createObject(ResultSet rset) throws SQLException  {
         return MyPhotoFactory.getInstance().createPhoto(rset);

@@ -38,6 +38,12 @@ public class FlowerType extends DataObject {
         }
     }
 
+    /**
+     * Method that creates a new Flower with type this and given ID.
+     * Calls the Flower constructor for object creation.
+     * @param id given ID
+     * @return new Flower instance with this type
+     */
     public Flower createInstance(Integer id) {
         return new Flower(id, this);
     }

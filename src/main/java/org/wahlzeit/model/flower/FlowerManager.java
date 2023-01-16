@@ -127,6 +127,13 @@ public class FlowerManager extends ObjectManager {
 
         SysLog.logSysInfo("loaded all flower_types");
     }
+
+    /**
+     * Method for creating a Flower object from a ResultSet. Calls the Flower constructor directly.
+     * @param rset ResultSet from database
+     * @return new Flower from ResultSet
+     * @throws SQLException exception when handling the ResultSet wrong
+     */
     @Override
     protected Persistent createObject(ResultSet rset) throws SQLException {
         return new Flower(rset);
@@ -136,6 +143,13 @@ public class FlowerManager extends ObjectManager {
         return instance;
     }
 
+    /**
+     * Creates a Flower from a FlowerType name.
+     * Calls private method for extracting the right type/creating right type,
+     * calls the createInstance Method from the FlowerType object.
+     * @param typeName type name as String
+     * @return new Flower with type as stated in the typeName String.
+     */
     public Flower createFlower(String typeName) {
         assert typeName != null;
         FlowerType type = getFlowerTypeFromName(typeName);
@@ -145,6 +159,12 @@ public class FlowerManager extends ObjectManager {
         return result;
     }
 
+    /**
+     * Helper method for extracting a FlowerType based on the String name. Either creates a new type or gets the
+     * existing one.
+     * @param typeName type name as String
+     * @return extracted FlowerType
+     */
     private FlowerType getFlowerTypeFromName(String typeName) {
         FlowerType foundType = typeCache.values().stream().filter(type -> type.getName().equals(typeName)).findFirst().orElse(null);
         if (foundType == null) {

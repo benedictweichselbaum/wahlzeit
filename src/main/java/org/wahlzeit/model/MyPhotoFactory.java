@@ -35,11 +35,24 @@ public class MyPhotoFactory extends PhotoFactory {
         return new MyPhoto();
     }
 
+    /**
+     * Factory method for creating a MyPhoto from an ID.
+     * Calls the constructor for object creation.
+     * @param id ID for new MyPhoto
+     * @return new MyPhoto
+     */
     @Override
     public MyPhoto createPhoto(PhotoId id) {
         return new MyPhoto(id);
     }
 
+    /**
+     * Factory method for creating a MyPhoto from a ResultSet.
+     * Calls the constructor for object creation.
+     * @param rs result set for creation
+     * @return new MyPhoto
+     * @throws SQLException exceptions from handling the ResultSet
+     */
     @Override
     public MyPhoto createPhoto(ResultSet rs) throws SQLException {
         return new MyPhoto(rs);

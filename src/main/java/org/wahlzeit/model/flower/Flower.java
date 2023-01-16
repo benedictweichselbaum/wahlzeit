@@ -12,12 +12,24 @@ public class Flower extends DataObject {
 
     private FlowerType type;
 
+    /**
+     * Constructor creating Flower from ID and FlowerType.
+     * Fills respective fields with inputs.
+     * @param id ID of new Flower
+     * @param type type of new Flower
+     */
     protected Flower(Integer id, FlowerType type) {
         this.id = id;
         this.type = type;
         incWriteCount();
     }
-    
+
+    /**
+     * Constructor creating Flower from ResultSet.
+     * Calls the readFrom-method for filling the fields.
+     * @param rset
+     * @throws SQLException
+     */
     protected Flower (ResultSet rset) throws SQLException {
         readFrom(rset);
         incWriteCount();
