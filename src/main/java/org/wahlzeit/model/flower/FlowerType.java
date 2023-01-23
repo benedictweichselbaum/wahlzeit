@@ -39,7 +39,7 @@ public class FlowerType extends DataObject {
 
     private Set<FlowerType> subTypes;
 
-    protected FlowerType(Integer id, String name) {
+    public FlowerType(Integer id, String name) {
         this.name = name;
         this.id = id;
         superType = null;

@@ -62,7 +62,7 @@ public class Flower extends DataObject {
      * @param id ID of new Flower
      * @param type type of new Flower
      */
-    protected Flower(Integer id, FlowerType type) {
+    public Flower(Integer id, FlowerType type) {
         this.id = id;
         this.type = type;
         incWriteCount();

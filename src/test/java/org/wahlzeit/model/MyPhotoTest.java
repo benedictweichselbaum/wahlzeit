@@ -5,6 +5,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import org.wahlzeit.model.flower.Flower;
+import org.wahlzeit.model.flower.FlowerManager;
+import org.wahlzeit.model.flower.FlowerType;
 import org.wahlzeit.services.DatabaseConnection;
 import org.wahlzeit.services.EmailAddress;
 import org.wahlzeit.services.Language;
@@ -37,6 +40,8 @@ public class MyPhotoTest {
 
     private LocationManager locationManager;
 
+    private FlowerManager flowerManager;
+
     private SessionManager sessionManager;
 
     private DatabaseConnection databaseConnection;
@@ -56,7 +61,9 @@ public class MyPhotoTest {
             resultSet = mock(ResultSet.class);
             when(preparedStatement.executeQuery()).thenReturn(resultSet);
             locationManager = mock(LocationManager.class);
+            flowerManager = mock(FlowerManager.class);
         }
+
 
         when(resultSet.getInt("id")).thenReturn(0);
 
@@ -84,7 +91,10 @@ public class MyPhotoTest {
         when(resultSet.getString("title")).thenReturn("Title");
         when(resultSet.getString("description")).thenReturn("Description");
 
+
+
         when(locationManager.getLocation(any())).thenReturn(new Location(1,1, 2, 3, CoordinateType.SPHERICAL));
+        when(flowerManager.getFlower(anyInt())).thenReturn(new Flower(1, new FlowerType(1, "Test")));
 
         doNothing().when(resultSet).updateInt(anyString(), anyInt());
         doNothing().when(resultSet).updateString(anyString(), anyString());
@@ -116,8 +126,11 @@ public class MyPhotoTest {
 
     @Test
     public void testConstructorWithRSet() throws Exception {
-        try (MockedStatic<LocationManager> staticLocationManager = Mockito.mockStatic(LocationManager.class)) {
+        try (MockedStatic<LocationManager> staticLocationManager = Mockito.mockStatic(LocationManager.class);
+             MockedStatic<FlowerManager> staticFlowerManager = Mockito.mockStatic(FlowerManager.class)
+        ) {
             staticLocationManager.when(LocationManager::getInstance).thenReturn(locationManager);
+            staticFlowerManager.when(FlowerManager::getInstance).thenReturn(flowerManager);
             Photo photo = new MyPhoto(resultSet);
 
             // Check if creation is successful
@@ -129,8 +142,11 @@ public class MyPhotoTest {
     @Test
     public void testReadFrom() throws Exception {
 
-        try (MockedStatic<LocationManager> staticLocationManager = Mockito.mockStatic(LocationManager.class)) {
+        try (MockedStatic<LocationManager> staticLocationManager = Mockito.mockStatic(LocationManager.class);
+             MockedStatic<FlowerManager> staticFlowerManager = Mockito.mockStatic(FlowerManager.class)
+        ) {
             staticLocationManager.when(LocationManager::getInstance).thenReturn(locationManager);
+            staticFlowerManager.when(FlowerManager::getInstance).thenReturn(flowerManager);
 
             MyPhoto photo = new MyPhoto();
 
@@ -162,8 +178,11 @@ public class MyPhotoTest {
 
     @Test
     public void testWriteOn() throws Exception {
-        try (MockedStatic<LocationManager> staticLocationManager = Mockito.mockStatic(LocationManager.class)) {
+        try (MockedStatic<LocationManager> staticLocationManager = Mockito.mockStatic(LocationManager.class);
+             MockedStatic<FlowerManager> staticFlowerManager = Mockito.mockStatic(FlowerManager.class)
+        ) {
             staticLocationManager.when(LocationManager::getInstance).thenReturn(locationManager);
+            staticFlowerManager.when(FlowerManager::getInstance).thenReturn(flowerManager);
             Photo photo = new MyPhoto(resultSet);
 
             photo.writeOn(resultSet);
@@ -241,8 +260,11 @@ public class MyPhotoTest {
 
     @Test
     public void testGetCaption() throws Exception {
-        try (MockedStatic<LocationManager> staticLocationManager = Mockito.mockStatic(LocationManager.class)) {
+        try (MockedStatic<LocationManager> staticLocationManager = Mockito.mockStatic(LocationManager.class);
+             MockedStatic<FlowerManager> staticFlowerManager = Mockito.mockStatic(FlowerManager.class)
+        ) {
             staticLocationManager.when(LocationManager::getInstance).thenReturn(locationManager);
+            staticFlowerManager.when(FlowerManager::getInstance).thenReturn(flowerManager);
             Photo photo = new MyPhoto(resultSet);
 
             assertEquals("Foto von <a href=\"https://www.homepage.de\" rel=\"nofollow\">Test Name</a>", photo.getCaption(new GermanModelConfig()));
