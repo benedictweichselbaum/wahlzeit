@@ -1,5 +1,6 @@
 package org.wahlzeit.model.flower;
 
+import org.wahlzeit.annotations.CollaborationBinding;
 import org.wahlzeit.services.ObjectManager;
 import org.wahlzeit.services.Persistent;
 import org.wahlzeit.services.SysLog;
@@ -12,6 +13,22 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * public collaboration ConcreteObjectManager {
+ *     public role ConcreteDataObject {
+ *          // Gets managed by the ConcreteManager by storing the object with its ID as the key.
+ *         Integer getId();
+ *     }
+ *
+ *     public role ConcreteManager {
+ *         // No methods. The Manager uses the ConcreteDataObjects without them using the Manager themselves.
+ *         // The Manager is therefor a client of the DataObject.
+ *     }
+ * }
+ */
+@CollaborationBinding(
+        binds = {"ConcreteObjectManager.ConcreteManager"}
+)
 public class FlowerManager extends ObjectManager {
 
     private static final int START_ID = 1;

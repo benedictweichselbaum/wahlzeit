@@ -1,7 +1,9 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.annotations.CollaborationBinding;
 import org.wahlzeit.annotations.PatternInstance;
 import org.wahlzeit.model.flower.Flower;
+import org.wahlzeit.model.flower.FlowerManager;
 import org.wahlzeit.services.EmailAddress;
 import org.wahlzeit.services.Language;
 import org.wahlzeit.utils.StringUtil;
@@ -9,6 +11,22 @@ import org.wahlzeit.utils.StringUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * public collaboration MyPhotoFlower {
+ *     public role MyPhoto {
+ *         // Owner of the flower
+ *         // Is client of the flower
+ *     }
+ *
+ *     public role Flower {
+ *          // Domain role/class adding information to the Photo
+ *          public Integer getId();
+ *     }
+ * }
+ */
+@CollaborationBinding(
+        binds = "MyPhotoFlower.MyPhoto"
+)
 @PatternInstance(
         patternName = "AbstractFactory",
         participants = {
@@ -78,6 +96,7 @@ public class MyPhoto extends Photo {
 
         title = rset.getString("title");
         description = rset.getString("description");
+        flower = FlowerManager.getInstance().getFlower(rset.getInt("flower"));
     }
 
     /**
@@ -102,6 +121,7 @@ public class MyPhoto extends Photo {
         rset.updateInt("location", location.getId());
         rset.updateString("title", title);
         rset.updateString("description", description);
+        rset.updateInt("flower", flower.getId());
     }
 
     public String getTitle() {

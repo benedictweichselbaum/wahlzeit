@@ -1,5 +1,6 @@
 package org.wahlzeit.model.flower;
 
+import org.wahlzeit.annotations.CollaborationBinding;
 import org.wahlzeit.model.exceptions.SuperTypeAlreadyExistsException;
 import org.wahlzeit.services.DataObject;
 
@@ -10,6 +11,25 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+/**
+ * public collaboration TypeObject {
+ *     public role Type {
+ *          // Provides BaseObjects with common properties.
+ *          BaseObject createInstance(Integer id);
+ *          boolean hasInstance(BaseObject b);
+ *          Integer getId();
+ *     }
+ *
+ *     public role BaseObject {
+ *          // Gets common properties from its Type.
+ *          FlowerType getType();
+ *          Integer getId();
+ *     }
+ * }
+ */
+@CollaborationBinding(
+        binds = {"TypeObject.Type"}
+)
 public class FlowerType extends DataObject {
 
     private Integer id;
